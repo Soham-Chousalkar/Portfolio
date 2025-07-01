@@ -1,0 +1,29 @@
+{
+    "name": "portfolio-museum",
+    "version": "1.0.0",
+    "description": "Interactive 3D Museum Portfolio",
+    "main": "index.html",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "deploy": "npm run build && gh-pages -d dist"
+    },
+    "dependencies": {
+        "three": "^0.158.0",
+        "gsap": "^3.12.2"
+    },
+    "devDependencies": {
+        "vite": "^5.0.0",
+        "gh-pages": "^6.1.0"
+    },
+    "keywords": [
+        "portfolio",
+        "3d",
+        "museum",
+        "interactive",
+        "threejs"
+    ],
+    "author": "Soham",
+    "license": "MIT"
+}
