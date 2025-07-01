@@ -84,6 +84,41 @@ body {
     pointer-events: auto;
 }
 
+/* Crosshair */
+#crosshair {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+#crosshair::before,
+#crosshair::after {
+    content: '';
+    position: absolute;
+    background: white;
+}
+
+#crosshair::before {
+    width: 2px;
+    height: 20px;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+}
+
+#crosshair::after {
+    width: 20px;
+    height: 2px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 /* Controls Info */
 #controls-info {
     position: absolute;
