@@ -34,6 +34,18 @@ class MarketplacePortfolio {
         this.shadowMapSize = this.isMobile ? 512 : 1024;
         this.geometrySegments = this.isMobile ? 6 : 8;
         
+        // Three-body problem simulation
+        this.threeBodyBodies = [];
+        this.threeBodyTrails = [];
+        this.threeBodyVelocities = [];
+        this.threeBodyMasses = [40, 70, 120];
+        this.gravityConstant = 0.7;
+        this.trailLength = 1000;
+        this.trailOpacity = 0.3;
+        this.boundaryRadius = 30;
+        this.boundaryCenter = new THREE.Vector3(0, 30, 0);
+        this.threeBodyRadius = 2.5;
+        
         this.init();
     }
 
@@ -54,6 +66,9 @@ class MarketplacePortfolio {
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0xf8f9fa);
         this.scene.fog = new THREE.Fog(0xf8f9fa, 20, 60);
+        
+        // Create three-body problem simulation in the sky
+        this.createThreeBodySimulation();
     }
 
     setupCamera() {
@@ -101,21 +116,24 @@ class MarketplacePortfolio {
 
         // Main directional light with optimized shadows
         const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        directionalLight.position.set(10, 20, 10);
-        
-        if (!this.isMobile) {
-            directionalLight.castShadow = true;
-            directionalLight.shadow.mapSize.width = this.shadowMapSize;
-            directionalLight.shadow.mapSize.height = this.shadowMapSize;
-            directionalLight.shadow.camera.near = 0.5;
-            directionalLight.shadow.camera.far = 100;
-            directionalLight.shadow.camera.left = -20;
-            directionalLight.shadow.camera.right = 20;
-            directionalLight.shadow.camera.top = 20;
-            directionalLight.shadow.camera.bottom = -20;
-        }
-        
+        directionalLight.position.set(40, 80, 40); // Sun high in the sky
+        directionalLight.castShadow = true;
+        directionalLight.shadow.mapSize.width = 2048;
+        directionalLight.shadow.mapSize.height = 2048;
+        directionalLight.shadow.camera.near = 10;
+        directionalLight.shadow.camera.far = 200;
+        directionalLight.shadow.camera.left = -100;
+        directionalLight.shadow.camera.right = 100;
+        directionalLight.shadow.camera.top = 100;
+        directionalLight.shadow.camera.bottom = -100;
         this.scene.add(directionalLight);
+
+        // Optionally, add a visible sun sphere
+        const sunGeometry = new THREE.SphereGeometry(6, 32, 32);
+        const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xfff7b2 });
+        const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+        sun.position.copy(directionalLight.position);
+        this.scene.add(sun);
     }
 
     createField() {
@@ -201,15 +219,143 @@ class MarketplacePortfolio {
             });
             const cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
             cloud.position.set(
-                (Math.random() - 0.5) * 3,
+                (Math.random() - 0.5) * 2,
                 (Math.random() - 0.5) * 1,
-                (Math.random() - 0.5) * 3
+                (Math.random() - 0.5) * 2
             );
             cloudGroup.add(cloud);
         }
         
         cloudGroup.position.set(x, y, z);
         this.scene.add(cloudGroup);
+    }
+
+    createThreeBodySimulation() {
+        // Create three bodies with different colors
+        const colors = [0xff6b6b, 0x4ecdc4, 0x45b7d1];
+        const positions = [
+            new THREE.Vector3(-20, 30, -20),
+            new THREE.Vector3(20, 30, 20),
+            new THREE.Vector3(0, 30, -40)
+        ];
+        // Much higher initial velocities for more speed
+        const velocities = [
+            new THREE.Vector3(2, 0, 2),
+            new THREE.Vector3(-1.5, 0, -2),
+            new THREE.Vector3(0, 0, 2.5)
+        ];
+
+        for (let i = 0; i < 3; i++) {
+            const geometry = new THREE.SphereGeometry(this.threeBodyRadius, 24, 24);
+            const material = new THREE.MeshStandardMaterial({ 
+                color: colors[i],
+                metalness: 0.3,
+                roughness: 0.7
+            });
+            const body = new THREE.Mesh(geometry, material);
+            body.position.copy(positions[i]);
+            body.castShadow = true;
+            body.receiveShadow = true;
+            this.scene.add(body);
+            this.threeBodyBodies.push(body);
+
+            // Create trail
+            const trailGeometry = new THREE.BufferGeometry();
+            const trailMaterial = new THREE.LineBasicMaterial({ 
+                color: colors[i],
+                transparent: true,
+                opacity: this.trailOpacity
+            });
+            const trail = new THREE.Line(trailGeometry, trailMaterial);
+            this.scene.add(trail);
+            this.threeBodyTrails.push(trail);
+
+            // Store velocity
+            this.threeBodyVelocities.push(velocities[i]);
+        }
+    }
+
+    updateThreeBodySimulation() {
+        if (this.threeBodyBodies.length === 0) return;
+
+        const dt = 0.016; // Time step (60 FPS)
+        const positions = this.threeBodyBodies.map(body => body.position.clone());
+        const accelerations = this.threeBodyBodies.map(() => new THREE.Vector3());
+
+        // Calculate gravitational forces between all pairs
+        for (let i = 0; i < this.threeBodyBodies.length; i++) {
+            for (let j = i + 1; j < this.threeBodyBodies.length; j++) {
+                const diff = positions[j].clone().sub(positions[i]);
+                const distance = diff.length();
+                const force = this.gravityConstant * this.threeBodyMasses[i] * this.threeBodyMasses[j] / (distance * distance);
+                const forceVector = diff.normalize().multiplyScalar(force);
+                accelerations[i].add(forceVector.clone().divideScalar(this.threeBodyMasses[i]));
+                accelerations[j].sub(forceVector.clone().divideScalar(this.threeBodyMasses[j]));
+            }
+        }
+
+        // Update velocities and positions
+        for (let i = 0; i < this.threeBodyBodies.length; i++) {
+            this.threeBodyVelocities[i].add(accelerations[i].multiplyScalar(dt));
+            this.threeBodyBodies[i].position.add(this.threeBodyVelocities[i].clone().multiplyScalar(dt));
+
+            // Hard boundary at the horizon
+            const relativePos = this.threeBodyBodies[i].position.clone().sub(this.boundaryCenter);
+            const distanceFromCenter = relativePos.length();
+            if (distanceFromCenter > this.boundaryRadius) {
+                const normal = relativePos.clone().normalize();
+                this.threeBodyBodies[i].position.copy(
+                    this.boundaryCenter.clone().add(normal.clone().multiplyScalar(this.boundaryRadius - 0.01))
+                );
+                const velocity = this.threeBodyVelocities[i];
+                const dotProduct = velocity.dot(normal);
+                velocity.sub(normal.clone().multiplyScalar(2 * dotProduct));
+                if (velocity.dot(normal) > 0) {
+                    velocity.sub(normal.clone().multiplyScalar(2 * velocity.dot(normal)));
+                }
+                velocity.multiplyScalar(0.8); // Lose a fifth of momentum at boundary
+            }
+        }
+
+        // Update trails
+        this.updateTrails();
+    }
+
+    updateTrails() {
+        for (let i = 0; i < this.threeBodyTrails.length; i++) {
+            const trail = this.threeBodyTrails[i];
+            const body = this.threeBodyBodies[i];
+            
+            // Get current positions from trail geometry
+            let positions = trail.geometry.attributes.position;
+            if (!positions || positions.count === 0) {
+                // Initialize trail
+                const initialPositions = new Float32Array(this.trailLength * 3);
+                for (let j = 0; j < this.trailLength; j++) {
+                    initialPositions[j * 3] = body.position.x;
+                    initialPositions[j * 3 + 1] = body.position.y;
+                    initialPositions[j * 3 + 2] = body.position.z;
+                }
+                trail.geometry.setAttribute('position', new THREE.BufferAttribute(initialPositions, 3));
+                return;
+            }
+
+            // Shift positions and add new position
+            const newPositions = new Float32Array(this.trailLength * 3);
+            for (let j = 0; j < this.trailLength - 1; j++) {
+                newPositions[j * 3] = positions.getX(j + 1);
+                newPositions[j * 3 + 1] = positions.getY(j + 1);
+                newPositions[j * 3 + 2] = positions.getZ(j + 1);
+            }
+            
+            // Add current position at the end
+            newPositions[(this.trailLength - 1) * 3] = body.position.x;
+            newPositions[(this.trailLength - 1) * 3 + 1] = body.position.y;
+            newPositions[(this.trailLength - 1) * 3 + 2] = body.position.z;
+
+            trail.geometry.setAttribute('position', new THREE.BufferAttribute(newPositions, 3));
+            trail.geometry.computeBoundingSphere();
+        }
     }
 
     createExhibits() {
@@ -555,6 +701,7 @@ class MarketplacePortfolio {
         requestAnimationFrame(() => this.animate());
         
         this.updateControls();
+        this.updateThreeBodySimulation();
         
         // Optimized exhibit animations with reduced calculations
         if (this.isLoaded) {
