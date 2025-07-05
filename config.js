@@ -209,7 +209,7 @@ export const PORTFOLIO_CONFIG = {
             id: "contact",
             title: "Get In Touch",
             category: "Connect",
-            position: { x: 0, z: 8 },
+            position: { x: 0, z: 18 },
             shortDescription: "Let's work together",
             content: `
                 <h3>Let's Connect!</h3>

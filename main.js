@@ -46,29 +46,51 @@ class MarketplacePortfolio {
         this.boundaryCenter = new THREE.Vector3(0, 30, 0);
         this.threeBodyRadius = 2.5;
         
+        this.verticalVelocity = 0; // For jetpack and gravity
+        this.gravity = -4.9; // Half of Earth's gravity (m/s^2)
+        this.jetpackPower = 8; // Upward acceleration when holding space
+        this.maxJetpackSpeed = 6; // Max upward speed
+        this.groundLevel = 0; // Y position for ground
+        
+        this.loadingStep = 'Starting...';
+        
         this.init();
     }
 
     init() {
+        this.setLoadingStep('Setting up scene...');
         this.setupScene();
+        this.setLoadingStep('Setting up camera...');
         this.setupCamera();
+        this.setLoadingStep('Setting up renderer...');
         this.setupRenderer();
+        this.setLoadingStep('Setting up lights...');
         this.setupLights();
+        this.setLoadingStep('Creating field...');
         this.createField();
+        this.setLoadingStep('Creating exhibits...');
         this.createExhibits();
+        this.setLoadingStep('Setting up controls...');
         this.setupControls();
+        this.setLoadingStep('Setting up event listeners...');
         this.setupEventListeners();
+        this.setLoadingStep('Starting animation loop...');
         this.animate();
+        this.setLoadingStep('Simulating loading...');
         this.simulateLoading();
     }
 
     setupScene() {
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0xf8f9fa);
-        this.scene.fog = new THREE.Fog(0xf8f9fa, 20, 60);
-        
+        // Night sky background and fog
+        this.scene.background = new THREE.Color(0x070d1b);
+        this.scene.fog = new THREE.Fog(0x070d1b, 40, 120);
         // Create three-body problem simulation in the sky
         this.createThreeBodySimulation();
+        // Add stars and shooting stars
+        this.stars = [];
+        this.shootingStars = [];
+        this.createStars(300);
     }
 
     setupCamera() {
@@ -85,7 +107,7 @@ class MarketplacePortfolio {
         this.cameraContainer.add(this.camera);
         this.scene.add(this.cameraContainer);
         
-        // Spawn point outside exhibit area
+        // Spawn point at the beginning of the walking path
         this.cameraContainer.position.set(0, 0, 20);
     }
 
@@ -107,6 +129,8 @@ class MarketplacePortfolio {
         }
         
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+        // Apply greyscale effect to the canvas
+        this.renderer.domElement.style.filter = 'grayscale(1)';
     }
 
     setupLights() {
@@ -153,8 +177,46 @@ class MarketplacePortfolio {
         
         this.scene.add(ground);
         
+        // Create walking path
+        this.createWalkingPath();
+        
         // Minimal decorative elements
         this.createMinimalDecorations();
+    }
+
+    createWalkingPath() {
+        // Create a subtle path along the center
+        const pathGeometry = new THREE.PlaneGeometry(2, 35);
+        const pathMaterial = new THREE.MeshLambertMaterial({ 
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.3
+        });
+        const path = new THREE.Mesh(pathGeometry, pathMaterial);
+        path.rotation.x = -Math.PI / 2;
+        path.position.y = 0.01; // Slightly above ground to prevent z-fighting
+        
+        this.scene.add(path);
+        
+        // Add path markers at each exhibit position
+        const pathPositions = [
+            { x: -8, z: -15 }, { x: 8, z: -10 }, { x: -8, z: -5 },
+            { x: 8, z: 0 }, { x: -8, z: 5 }, { x: 8, z: 10 }, { x: 0, z: 30 }
+        ];
+        
+        pathPositions.forEach((pos, index) => {
+            const markerGeometry = new THREE.CircleGeometry(0.5, 8);
+            const markerMaterial = new THREE.MeshLambertMaterial({ 
+                color: 0x64ffda,
+                transparent: true,
+                opacity: 0.4
+            });
+            const marker = new THREE.Mesh(markerGeometry, markerMaterial);
+            marker.rotation.x = -Math.PI / 2;
+            marker.position.set(pos.x, 0.02, pos.z);
+            
+            this.scene.add(marker);
+        });
     }
 
     createMinimalDecorations() {
@@ -298,27 +360,80 @@ class MarketplacePortfolio {
         for (let i = 0; i < this.threeBodyBodies.length; i++) {
             this.threeBodyVelocities[i].add(accelerations[i].multiplyScalar(dt));
             this.threeBodyBodies[i].position.add(this.threeBodyVelocities[i].clone().multiplyScalar(dt));
+        }
 
-            // Hard boundary at the horizon
-            const relativePos = this.threeBodyBodies[i].position.clone().sub(this.boundaryCenter);
-            const distanceFromCenter = relativePos.length();
-            if (distanceFromCenter > this.boundaryRadius) {
-                const normal = relativePos.clone().normalize();
-                this.threeBodyBodies[i].position.copy(
-                    this.boundaryCenter.clone().add(normal.clone().multiplyScalar(this.boundaryRadius - 0.01))
-                );
-                const velocity = this.threeBodyVelocities[i];
-                const dotProduct = velocity.dot(normal);
-                velocity.sub(normal.clone().multiplyScalar(2 * dotProduct));
-                if (velocity.dot(normal) > 0) {
-                    velocity.sub(normal.clone().multiplyScalar(2 * velocity.dot(normal)));
-                }
-                velocity.multiplyScalar(0.8); // Lose a fifth of momentum at boundary
+        // Check if all bodies are out of camera view
+        const frustum = new THREE.Frustum();
+        const cameraViewProjectionMatrix = new THREE.Matrix4();
+        this.camera.updateMatrixWorld();
+        this.camera.matrixWorldInverse.getInverse(this.camera.matrixWorld);
+        cameraViewProjectionMatrix.multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse);
+        frustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
+        let allOut = true;
+        for (let i = 0; i < this.threeBodyBodies.length; i++) {
+            if (frustum.intersectsObject(this.threeBodyBodies[i])) {
+                allOut = false;
+                break;
             }
+        }
+        if (allOut) {
+            // Remove old bodies and trails
+            this.threeBodyBodies.forEach(body => this.scene.remove(body));
+            this.threeBodyTrails.forEach(trail => this.scene.remove(trail));
+            this.threeBodyBodies = [];
+            this.threeBodyTrails = [];
+            this.threeBodyVelocities = [];
+            // Spawn new system from random directions
+            this.spawnRandomThreeBodySystem();
         }
 
         // Update trails
         this.updateTrails();
+    }
+
+    spawnRandomThreeBodySystem() {
+        const colors = [0xff6b6b, 0x4ecdc4, 0x45b7d1];
+        const positions = [];
+        const velocities = [];
+        const radius = 50;
+        for (let i = 0; i < 3; i++) {
+            // Random direction on a sphere
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const x = radius * Math.sin(phi) * Math.cos(theta);
+            const y = 30 + radius * Math.abs(Math.cos(phi));
+            const z = radius * Math.sin(phi) * Math.sin(theta);
+            positions.push(new THREE.Vector3(x, y, z));
+            // Velocity aimed roughly toward the center
+            const toCenter = new THREE.Vector3(0, 30, 0).sub(new THREE.Vector3(x, y, z)).normalize();
+            velocities.push(toCenter.multiplyScalar(2 + Math.random() * 2));
+        }
+        for (let i = 0; i < 3; i++) {
+            const geometry = new THREE.SphereGeometry(this.threeBodyRadius, 24, 24);
+            const material = new THREE.MeshStandardMaterial({ 
+                color: colors[i],
+                metalness: 0.3,
+                roughness: 0.7
+            });
+            const body = new THREE.Mesh(geometry, material);
+            body.position.copy(positions[i]);
+            body.castShadow = true;
+            body.receiveShadow = true;
+            this.scene.add(body);
+            this.threeBodyBodies.push(body);
+            // Create trail
+            const trailGeometry = new THREE.BufferGeometry();
+            const trailMaterial = new THREE.LineBasicMaterial({ 
+                color: colors[i],
+                transparent: true,
+                opacity: this.trailOpacity
+            });
+            const trail = new THREE.Line(trailGeometry, trailMaterial);
+            this.scene.add(trail);
+            this.threeBodyTrails.push(trail);
+            // Store velocity
+            this.threeBodyVelocities.push(velocities[i]);
+        }
     }
 
     updateTrails() {
@@ -359,21 +474,26 @@ class MarketplacePortfolio {
     }
 
     createExhibits() {
-        const positions = [
-            { x: -12, z: -12 }, { x: 0, z: -12 }, { x: 12, z: -12 },
-            { x: -12, z: 0 }, { x: 0, z: 0 }, { x: 12, z: 0 },
-            { x: 0, z: 12 }
+        // Get the number of exhibits
+        const exhibitCount = PORTFOLIO_CONFIG.exhibits.length;
+        // Create a walking path with exhibits alternating on both sides
+        const pathPositions = [
+            { x: -8, z: -15 },   // About Me - Left side
+            { x: 8, z: -10 },    // Experience - Right side
+            { x: -8, z: -5 },    // Projects - Left side
+            { x: 8, z: 0 },      // Skills - Right side
+            { x: -8, z: 5 },     // Education - Left side
+            { x: 8, z: 10 },     // Achievements - Right side
+            { x: 0, z: 30 }      // Contact - Center at very end
         ];
-        
+        // Only use as many positions as there are exhibits
         PORTFOLIO_CONFIG.exhibits.forEach((exhibit, index) => {
-            const position = positions[index] || exhibit.position;
-            this.createExhibit({ ...exhibit, position }, index);
+            this.createExhibit({ ...exhibit, position: pathPositions[index] }, index);
         });
     }
 
     createExhibit(data, index) {
         const exhibitGroup = new THREE.Group();
-        
         // Main display board (floppy disk)
         const boardGeometry = new THREE.PlaneGeometry(2.5, 2);
         const boardMaterial = new THREE.MeshLambertMaterial({ 
@@ -383,28 +503,23 @@ class MarketplacePortfolio {
         });
         const board = new THREE.Mesh(boardGeometry, boardMaterial);
         board.position.set(0, 2, 0);
-        
         if (!this.isMobile) {
             board.castShadow = true;
         }
-        
         exhibitGroup.add(board);
-        
         // Title bar
         const titleGeometry = new THREE.PlaneGeometry(2.3, 0.4);
         const titleMaterial = new THREE.MeshBasicMaterial({ color: 0x64ffda });
         const title = new THREE.Mesh(titleGeometry, titleMaterial);
         title.position.set(0, 2.7, 0.01);
         exhibitGroup.add(title);
-        
         // Icon sphere
         const iconGeometry = new THREE.SphereGeometry(0.3, this.geometrySegments, this.geometrySegments);
         const iconMaterial = new THREE.MeshBasicMaterial({ color: 0x00bcd4 });
         const icon = new THREE.Mesh(iconGeometry, iconMaterial);
         icon.position.set(0, 1.3, 0.01);
         exhibitGroup.add(icon);
-        
-        // Glow effect
+        // Enhanced glow effect for hover detection
         const glowGeometry = new THREE.BoxGeometry(3.2, 0.3, 2.2);
         const glowMaterial = new THREE.MeshBasicMaterial({ 
             color: 0x64ffda,
@@ -414,14 +529,44 @@ class MarketplacePortfolio {
         const glow = new THREE.Mesh(glowGeometry, glowMaterial);
         glow.position.set(0, 0.6, 0);
         exhibitGroup.add(glow);
-        
+        // Add hover glow effect
+        const hoverGlowGeometry = new THREE.BoxGeometry(4, 0.5, 3);
+        const hoverGlowMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0x00ffff,
+            transparent: true,
+            opacity: 0
+        });
+        const hoverGlow = new THREE.Mesh(hoverGlowGeometry, hoverGlowMaterial);
+        hoverGlow.position.set(0, 0.6, 0);
+        exhibitGroup.add(hoverGlow);
+        // Add 3D heading above the floppy disk using a canvas texture sprite
+        const canvas = document.createElement('canvas');
+        canvas.width = 256;
+        canvas.height = 64;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#000';
+        ctx.font = 'bold 32px Inter, Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillText(data.title, canvas.width / 2, canvas.height / 2);
+        const texture = new THREE.CanvasTexture(canvas);
+        const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true });
+        const sprite = new THREE.Sprite(spriteMaterial);
+        sprite.scale.set(2.5, 0.6, 1);
+        sprite.position.set(0, 3.3, 0);
+        exhibitGroup.add(sprite);
         // Position and store data
         exhibitGroup.position.set(data.position.x, 0, data.position.z);
-        exhibitGroup.userData = { ...data, index, clickable: true };
-        
+        exhibitGroup.userData = { 
+            ...data, 
+            index, 
+            clickable: true,
+            hoverGlow: hoverGlow,
+            isHovered: false
+        };
         this.exhibits.push(exhibitGroup);
         this.scene.add(exhibitGroup);
-        
         // Entrance animation
         gsap.from(exhibitGroup.position, {
             y: -10,
@@ -568,6 +713,21 @@ class MarketplacePortfolio {
                 this.navigateToSection(e.target.dataset.section);
             });
         });
+
+        // Welcome message dismissal
+        document.getElementById('start-exploring')?.addEventListener('click', () => {
+            const welcomeMessage = document.getElementById('welcome-message');
+            if (welcomeMessage) {
+                gsap.to(welcomeMessage, {
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        welcomeMessage.style.display = 'none';
+                    }
+                });
+            }
+        });
     }
 
     onMouseClick(event) {
@@ -653,7 +813,7 @@ class MarketplacePortfolio {
     simulateLoading() {
         const progressBar = document.querySelector('.loading-progress');
         const loadingScreen = document.getElementById('loading-screen');
-        
+        this.setLoadingStep('Finalizing...');
         gsap.to(progressBar, {
             width: '100%',
             duration: 2, // Reduced loading time
@@ -695,6 +855,57 @@ class MarketplacePortfolio {
             this.cameraContainer.position.x = Math.max(-this.bounds, Math.min(this.bounds, this.cameraContainer.position.x));
             this.cameraContainer.position.z = Math.max(-this.bounds, Math.min(this.bounds, this.cameraContainer.position.z));
         }
+
+        // --- Jetpack and Gravity Logic ---
+        const dt = 1 / 60; // Assume 60 FPS for physics
+        if (this.keys['Space']) {
+            this.verticalVelocity += this.jetpackPower * dt;
+            if (this.verticalVelocity > this.maxJetpackSpeed) this.verticalVelocity = this.maxJetpackSpeed;
+        } else {
+            this.verticalVelocity += this.gravity * dt;
+        }
+        this.cameraContainer.position.y += this.verticalVelocity * dt;
+        // Clamp to ground
+        if (this.cameraContainer.position.y < this.groundLevel) {
+            this.cameraContainer.position.y = this.groundLevel;
+            this.verticalVelocity = 0;
+        }
+    }
+
+    updateHoverDetection() {
+        if (this.isExhibitOpen || !this.isPointerLocked) return;
+        
+        // Set mouse position to center of screen for crosshair detection
+        this.mouse.x = 0;
+        this.mouse.y = 0;
+        
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+        const intersects = this.raycaster.intersectObjects(this.exhibits, true);
+        
+        // Reset all hover states
+        this.exhibits.forEach(exhibit => {
+            if (exhibit.userData.hoverGlow && exhibit.userData.isHovered) {
+                exhibit.userData.isHovered = false;
+                gsap.to(exhibit.userData.hoverGlow.material, {
+                    opacity: 0,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            }
+        });
+        
+        // Check for new hover
+        if (intersects.length > 0) {
+            const exhibit = intersects[0].object.parent;
+            if (exhibit.userData.hoverGlow && !exhibit.userData.isHovered) {
+                exhibit.userData.isHovered = true;
+                gsap.to(exhibit.userData.hoverGlow.material, {
+                    opacity: 0.6,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            }
+        }
     }
 
     animate() {
@@ -702,6 +913,8 @@ class MarketplacePortfolio {
         
         this.updateControls();
         this.updateThreeBodySimulation();
+        // Night sky: twinkling stars and shooting stars
+        this.updateStarsAndShootingStars();
         
         // Optimized exhibit animations with reduced calculations
         if (this.isLoaded) {
@@ -711,9 +924,95 @@ class MarketplacePortfolio {
                 exhibit.rotation.y = Math.sin(time + offset) * 0.05;
                 exhibit.position.y = Math.sin(time * 2 + offset) * 0.1;
             });
+            
+            // Hover detection for glow effect
+            this.updateHoverDetection();
         }
 
         this.renderer.render(this.scene, this.camera);
+    }
+
+    createStars(count) {
+        // Remove old stars if any
+        if (this.stars.length > 0) {
+            this.stars.forEach(star => this.scene.remove(star));
+            this.stars = [];
+        }
+        for (let i = 0; i < count; i++) {
+            const geometry = new THREE.SphereGeometry(Math.random() * 0.08 + 0.04, 6, 6);
+            const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const star = new THREE.Mesh(geometry, material);
+            // Place stars in a dome above the scene
+            const r = 80 + Math.random() * 40;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.random() * Math.PI * 0.6; // Only upper hemisphere
+            star.position.set(
+                r * Math.sin(phi) * Math.cos(theta),
+                r * Math.cos(phi) + 20,
+                r * Math.sin(phi) * Math.sin(theta)
+            );
+            star.material.opacity = 0.7 + Math.random() * 0.3;
+            star.material.transparent = true;
+            this.scene.add(star);
+            this.stars.push(star);
+        }
+    }
+
+    maybeSpawnShootingStar() {
+        // 1% chance per frame
+        if (Math.random() < 0.01 && this.shootingStars.length < 2) {
+            const geometry = new THREE.SphereGeometry(0.12, 8, 8);
+            const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const star = new THREE.Mesh(geometry, material);
+            // Start at random edge of dome
+            const r = 100;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.random() * Math.PI * 0.5;
+            star.position.set(
+                r * Math.sin(phi) * Math.cos(theta),
+                r * Math.cos(phi) + 30,
+                r * Math.sin(phi) * Math.sin(theta)
+            );
+            // Velocity toward random direction across sky
+            const targetTheta = theta + (Math.random() - 0.5) * Math.PI * 0.5;
+            const targetPhi = phi + (Math.random() - 0.2) * 0.3;
+            const speed = 2 + Math.random() * 2;
+            star.userData.velocity = new THREE.Vector3(
+                speed * (Math.sin(targetPhi) * Math.cos(targetTheta) - Math.sin(phi) * Math.cos(theta)),
+                speed * (Math.cos(targetPhi) - Math.cos(phi)),
+                speed * (Math.sin(targetPhi) * Math.sin(targetTheta) - Math.sin(phi) * Math.sin(theta))
+            );
+            star.userData.life = 0;
+            this.scene.add(star);
+            this.shootingStars.push(star);
+        }
+    }
+
+    updateStarsAndShootingStars() {
+        // Twinkle stars
+        for (let i = 0; i < this.stars.length; i++) {
+            if (Math.random() < 0.1) {
+                this.stars[i].material.opacity = 0.5 + Math.random() * 0.5;
+            }
+        }
+        // Shooting stars
+        for (let i = this.shootingStars.length - 1; i >= 0; i--) {
+            const star = this.shootingStars[i];
+            star.position.add(star.userData.velocity);
+            star.userData.life += 1;
+            star.material.opacity = Math.max(0, 1 - star.userData.life / 40);
+            if (star.userData.life > 40) {
+                this.scene.remove(star);
+                this.shootingStars.splice(i, 1);
+            }
+        }
+        this.maybeSpawnShootingStar();
+    }
+
+    setLoadingStep(msg) {
+        this.loadingStep = msg;
+        const loadingMsg = document.querySelector('#loading-screen .loading-content p');
+        if (loadingMsg) loadingMsg.textContent = msg;
     }
 }
 
