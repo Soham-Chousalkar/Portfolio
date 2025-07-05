@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soham's Portfolio Museum</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/index-my40XL18.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CjgecZ8v.css">
+</head>
+
+<body>
+    <div id="loading-screen">
+        <div class="loading-content">
+            <h1>Welcome to Soham's Portfolio Museum</h1>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p>Loading your interactive experience...</p>
+        </div>
+    </div>
+
+    <div id="ui-overlay">
+        <div id="crosshair"></div>
+
+        <div id="welcome-message" class="welcome-overlay">
+            <div class="welcome-content">
+                <h2>Welcome to the Portfolio Museum!</h2>
+                <p>🎯 <strong>New Feature:</strong> Follow the glowing path to explore exhibits!</p>
+                <p>• Walk along the center path</p>
+                <p>• Point your crosshair at floppy disks to see them glow</p>
+                <p>• Click on glowing disks to learn more</p>
+                <button id="start-exploring" class="start-btn">Start Exploring</button>
+            </div>
+        </div>
+
+        <div id="controls-info">
+            <h3>Controls</h3>
+            <p>WASD - Move along the path</p>
+            <p>Click - Enable mouse look</p>
+            <p>Mouse - Look around</p>
+            <p>Point crosshair at floppy disks - See glow effect</p>
+            <p>Click glowing disks - View details</p>
+            <p>ESC - Toggle menu</p>
+            <p class="mobile-only">📱 Mobile: Drag to look, pinch to move, tap tables</p>
+        </div>
+
+        <div id="exhibit-info" class="hidden">
+            <div class="exhibit-content">
+                <button class="close-btn">&times;</button>
+                <div class="exhibit-header">
+                    <h2 id="exhibit-title"></h2>
+                    <span id="exhibit-category"></span>
+                </div>
+                <div id="exhibit-body"></div>
+            </div>
+        </div>
+
+        <div id="menu" class="hidden">
+            <div class="menu-content">
+                <h2>Portfolio Museum</h2>
+                <div class="menu-sections">
+                    <button class="menu-btn" data-section="about">About Me</button>
+                    <button class="menu-btn" data-section="experience">Experience</button>
+                    <button class="menu-btn" data-section="projects">Projects</button>
+                    <button class="menu-btn" data-section="skills">Skills</button>
+                    <button class="menu-btn" data-section="education">Education</button>
+                </div>
+                <button class="menu-btn" id="resume-btn">Download Resume</button>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="museum-canvas"></canvas>
+
+</body>
+
+</html>
