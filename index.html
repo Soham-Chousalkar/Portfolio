@@ -4,9 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soham's Portfolio Museum</title>
+    <title>Soham's Portfolio Museum</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Interactive 3D Portfolio Museum showcasing Soham's work, experience, and projects in an immersive virtual environment.">
+    <meta name="keywords" content="portfolio, 3D, interactive, web developer, software engineer, projects, experience">
+    <meta name="author" content="Soham">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Soham's Portfolio Museum">
+    <meta property="og:description" content="Interactive 3D Portfolio Museum showcasing Soham's work and experience.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://soham-chousalkar.github.io/Portfolio/">
+
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+
+    <!-- Stylesheets -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/Portfolio/assets/index-CSknD7rj.js"></script>
+  <script type="module" crossorigin src="/Portfolio/assets/index-mtd0OcZB.js"></script>
+  <link rel="modulepreload" crossorigin href="/Portfolio/assets/vendor-DR4BrjZC.js">
+  <link rel="modulepreload" crossorigin href="/Portfolio/assets/app-CdxmSSeO.js">
   <link rel="stylesheet" crossorigin href="/Portfolio/assets/index-DYCNikfy.css">
 </head>
 
@@ -74,6 +95,21 @@
 
     <canvas id="museum-canvas"></canvas>
 
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/Portfolio/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
 </body>
 
 </html>
