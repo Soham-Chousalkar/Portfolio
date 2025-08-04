@@ -50,19 +50,19 @@ A modern, responsive portfolio website featuring liquid glass effects, real-time
 ## 📸 Screenshots
 
 ### 🏠 Home Section
-![Home Section](screenshots/home.png)
+![Home Section](assets/images/home.png)
 *Main portfolio landing page with liquid glass effects*
 
 ### 🎨 Customizer Tool
-![Customizer](screenshots/customize.png)
+![Customizer](assets/images/customize.png)
 *Advanced color customization panel with depth controls*
 
 ### 🌈 Color Picker
-![Color Wheel](screenshots/Color-wheel.png)
+![Color Wheel](assets/images/Color-wheel.png)
 *Canvas-based color selection with HSL controls*
 
 ### 📊 Visitor Analytics
-![Visitor Counter](screenshots/visitors.png)
+![Visitor Counter](assets/images/visitors.png)
 *Real-time visitor tracking with geographic data*
 
 ## 🚀 Getting Started
@@ -127,9 +127,24 @@ Portfolio/
 ├── index.html              # Main HTML file
 ├── styles.css              # Liquid glass styling
 ├── main.js                 # Frontend functionality
-├── visitor-counter.js      # Visitor tracking
+├── scripts/                # JavaScript utilities
+│   ├── visitor-counter.js  # Visitor tracking
+│   ├── deployment-status.js # Status checker
+│   └── deploy.sh          # Deployment script
+├── tools/                  # Development tools
+│   ├── check-deployment.md # Deployment guide
+│   └── tatus              # Status file
+├── assets/                 # Static assets
+│   ├── data/              # JSON data files
+│   │   ├── visits.json    # Visit data
+│   │   └── visitors.json  # Visitor data
+│   └── images/            # Images and screenshots
+│       ├── home.png       # Home screenshot
+│       ├── customize.png  # Customizer screenshot
+│       ├── Color-wheel.png # Color picker screenshot
+│       ├── visitors.png   # Visitor analytics screenshot
+│       └── Soham_Resume.pdf # Resume
 ├── server.js               # Backend API
-├── screenshots/            # Portfolio screenshots
 ├── dist/                   # Built files
 └── .github/workflows/      # GitHub Actions
 ```

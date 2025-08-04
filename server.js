@@ -16,8 +16,8 @@ app.use(express.json());
 app.use(express.static('dist'));
 
 // Data storage
-const VISITORS_FILE = 'visitors.json';
-const VISITS_FILE = 'visits.json';
+const VISITORS_FILE = 'assets/data/visitors.json';
+const VISITS_FILE = 'assets/data/visits.json';
 
 // Initialize data files if they don't exist
 async function initializeData() {

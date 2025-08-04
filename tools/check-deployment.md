@@ -1,7 +1,7 @@
 # 🚀 Deployment Checklist for Liquid Glass Portfolio
 
 ## ✅ **Completed Steps**
-- [x] Screenshots added to `screenshots/` folder
+- [x] Screenshots added to `assets/images/` folder
 - [x] README updated with comprehensive documentation
 - [x] Changes committed and pushed to `liquid-glass-portfolio` branch
 - [x] GitHub Actions workflow configured correctly
@@ -31,7 +31,7 @@ liquid-glass-portfolio (source branch)
 ├── index.html
 ├── styles.css
 ├── main.js
-├── screenshots/
+├── assets/images/
 └── .github/workflows/deploy.yml
 
 gh-pages (deployment branch - auto-generated)
@@ -39,7 +39,7 @@ gh-pages (deployment branch - auto-generated)
 ├── assets/
 │   ├── main-*.css
 │   └── main-*.js
-└── screenshots/
+└── assets/images/
 ```
 
 ## 🚨 **Common Issues & Solutions**
@@ -83,4 +83,32 @@ https://soham-chousalkar.github.io/Portfolio/
 4. Clear browser cache if needed
 
 ---
-*Last updated: $(date)* 
+*Last updated: $(date)*
+
+## 📁 **New Directory Structure**
+```
+Portfolio/
+├── index.html              # Main HTML file
+├── styles.css              # Liquid glass styling
+├── main.js                 # Frontend functionality
+├── scripts/                # JavaScript utilities
+│   ├── visitor-counter.js  # Visitor tracking
+│   ├── deployment-status.js # Status checker
+│   └── deploy.sh          # Deployment script
+├── tools/                  # Development tools
+│   ├── check-deployment.md # Deployment guide
+│   └── tatus              # Status file
+├── assets/                 # Static assets
+│   ├── data/              # JSON data files
+│   │   ├── visits.json    # Visit data
+│   │   └── visitors.json  # Visitor data
+│   └── images/            # Images and screenshots
+│       ├── home.png       # Home screenshot
+│       ├── customize.png  # Customizer screenshot
+│       ├── Color-wheel.png # Color picker screenshot
+│       ├── visitors.png   # Visitor analytics screenshot
+│       └── Soham_Resume.pdf # Resume
+├── server.js               # Backend API
+├── dist/                   # Built files
+└── .github/workflows/      # GitHub Actions
+``` 
