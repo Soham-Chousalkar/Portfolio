@@ -1,9 +1,19 @@
-# 🌟 Liquid Glass Portfolio - Soham Chousalkar
+# 🌟 Liquid Glass Portfolio
 
 A modern, responsive portfolio website featuring liquid glass effects, real-time visitor tracking, and an advanced color customizer.
 
 ## 🚀 Live Demo
 **[View Live Portfolio](https://soham-chousalkar.github.io/Portfolio/)**
+
+## 📸 Screenshots
+
+<div align="center">
+  <img src="assets/images/home.png" alt="Home Section" width="45%" />
+  <img src="assets/images/customize.png" alt="Customizer Tool" width="45%" />
+  <br><br>
+  <img src="assets/images/Color-wheel.png" alt="Color Picker" width="45%" />
+  <img src="assets/images/visitors.png" alt="Visitor Analytics" width="45%" />
+</div>
 
 ## ✨ Features
 
@@ -33,12 +43,6 @@ A modern, responsive portfolio website featuring liquid glass effects, real-time
 - Interactive charts and statistics
 - Auto-refresh every 30 seconds
 
-### 📱 **Responsive Design**
-- Mobile-first approach
-- Smooth animations
-- Touch-friendly interactions
-- Cross-browser compatibility
-
 ## 🛠️ Technologies Used
 
 - **Frontend:** HTML5, CSS3, JavaScript (ES6+)
@@ -47,81 +51,27 @@ A modern, responsive portfolio website featuring liquid glass effects, real-time
 - **Backend:** Node.js, Express.js
 - **Deployment:** GitHub Pages with GitHub Actions
 
-## 📸 Screenshots
+## 🚀 Quick Start
 
-### 🏠 Home Section
-![Home Section](assets/images/home.png)
-*Main portfolio landing page with liquid glass effects*
-
-### 🎨 Customizer Tool
-![Customizer](assets/images/customize.png)
-*Advanced color customization panel with depth controls*
-
-### 🌈 Color Picker
-![Color Wheel](assets/images/Color-wheel.png)
-*Canvas-based color selection with HSL controls*
-
-### 📊 Visitor Analytics
-![Visitor Counter](assets/images/visitors.png)
-*Real-time visitor tracking with geographic data*
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn
-
-### Installation
 ```bash
-# Clone the repository
+# Clone and setup
 git clone https://github.com/Soham-Chousalkar/Portfolio.git
-
-# Navigate to the project directory
 cd Portfolio
-
-# Switch to the liquid glass branch
 git checkout liquid-glass-portfolio
-
-# Install dependencies
 npm install
 
-# Start development server
+# Development
 npm run dev
 
-# Build for production
+# Production build
 npm run build
 
-# Start backend server (for visitor tracking)
+# Start backend (for visitor tracking)
 npm run server
 ```
 
-## 🎯 Key Features Explained
-
-### **Liquid Glass Effects**
-- `backdrop-filter: blur()` for frosted glass appearance
-- `rgba()` backgrounds for transparency
-- Subtle box-shadows for depth
-- Animated background patterns
-
-### **Color Customizer**
-- Individual color controls for each UI element
-- Real-time HSL to Hex conversion
-- Canvas-based color picker
-- Automatic text color inversion for contrast
-
-### **World Clock**
-- JavaScript Date object manipulation
-- Manual timezone offset calculations
-- Real-time updates every second
-- Responsive design for mobile
-
-### **Visitor Tracking**
-- Express.js backend API
-- JSON file storage for development
-- Geographic location simulation
-- Interactive charts with Canvas API
-
 ## 📁 Project Structure
+
 ```
 Portfolio/
 ├── index.html              # Main HTML file
@@ -149,28 +99,8 @@ Portfolio/
 └── .github/workflows/      # GitHub Actions
 ```
 
-## 🌐 Deployment
+## 🎨 Color Palette
 
-### GitHub Pages
-- Automatic deployment via GitHub Actions
-- Built files served from `gh-pages` branch
-- Live at: https://soham-chousalkar.github.io/Portfolio/
-
-### Local Development
-```bash
-# Development server
-npm run dev
-
-# Production build
-npm run build
-
-# Preview build
-npm run preview
-```
-
-## 🎨 Customization
-
-### Color Palette
 The portfolio uses a sophisticated color palette:
 - **Background:** `#dbd3d8` (Light gray-beige)
 - **Navigation:** `#eff1f3` (Off-white)
@@ -178,23 +108,11 @@ The portfolio uses a sophisticated color palette:
 - **Panels:** `#d77a61` (Warm coral)
 - **Accent:** `#d8b4a0` (Peach)
 
-### Adding New Features
-1. **New Sections:** Add to `index.html` and `styles.css`
-2. **Animations:** Use CSS keyframes and transitions
-3. **Interactive Elements:** Extend `main.js` functionality
-4. **Styling:** Follow liquid glass design principles
+## 🌐 Deployment
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- **Live URL:** https://soham-chousalkar.github.io/Portfolio/
+- **Automatic deployment** via GitHub Actions
+- **Built files** served from `gh-pages` branch
 
 ## 👨‍💻 Author
 
@@ -202,13 +120,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Full Stack Developer & UI/UX Designer
 - Specializing in modern web technologies
 - Creating beautiful, functional digital experiences
-
-## 🌟 Acknowledgments
-
-- **Liquid Glass Design:** Inspired by modern glassmorphism trends
-- **Color Theory:** Advanced color picker with accessibility in mind
-- **Real-time Features:** World clock and visitor tracking for engagement
-- **Responsive Design:** Mobile-first approach for all devices
 
 ---
 
