@@ -1,239 +1,200 @@
-# 🌟 Interactive Portfolio Marketplace
+# 🌟 Liquid Glass Portfolio - Soham Chousalkar
 
-A beautiful, interactive 3D portfolio website built with Three.js that presents your achievements and projects in an open-field marketplace environment. Perfect for showcasing your work in an engaging and memorable way!
+A modern, responsive portfolio website featuring liquid glass effects, real-time visitor tracking, and an advanced color customizer.
+
+## 🚀 Live Demo
+**[View Live Portfolio](https://soham-chousalkar.github.io/Portfolio/)**
 
 ## ✨ Features
 
-- **🎮 Interactive 3D Environment**: Walk around an open field with exhibits displayed on tables
-- **📱 Mobile-First Design**: Fully responsive with touch controls optimized for portrait mode
-- **⚡ Fast & Smooth**: Minimalistic design prioritizing performance and clarity
-- **🔧 Easy Customization**: Simple configuration file for adding/editing content
-- **🎨 Modern UI**: Clean, professional design with smooth animations
-- **📄 Resume Integration**: Direct link to your PDF resume
-- **🌐 Web-Based**: No heavy software required - runs in any modern browser
+### 🎨 **Liquid Glass Design**
+- Frosted glass panels with backdrop blur effects
+- Subtle shimmer animations and depth
+- Responsive design with smooth transitions
 
-## 🚀 Quick Start
+### 🌍 **World Clock**
+- Real-time display for 5 timezones:
+  - 🇮🇳 Hyderabad (IST)
+  - 🇬🇧 London (GMT/BST)
+  - 🇺🇸 Arizona (MST)
+  - 🇺🇸 Texas (CST)
+  - 🇺🇸 Dayton (EST)
+
+### 🎛️ **Advanced Customizer Tool**
+- **Depth/Intensity Slider:** Control blur and shadow effects
+- **Color Palette Picker:** 6 individual color controls
+- **Real-time Preview:** Canvas-based color selection
+- **HSL/Hex Input:** Multiple color input methods
+- **Smart Text Inversion:** Automatic contrast adjustment
+
+### 📊 **Visitor Analytics**
+- Real-time visitor counter
+- Geographic location tracking
+- Interactive charts and statistics
+- Auto-refresh every 30 seconds
+
+### 📱 **Responsive Design**
+- Mobile-first approach
+- Smooth animations
+- Touch-friendly interactions
+- Cross-browser compatibility
+
+## 🛠️ Technologies Used
+
+- **Frontend:** HTML5, CSS3, JavaScript (ES6+)
+- **Build Tool:** Vite
+- **Styling:** Custom CSS with liquid glass effects
+- **Backend:** Node.js, Express.js
+- **Deployment:** GitHub Pages with GitHub Actions
+
+## 📸 Screenshots
+
+### 🏠 Home Section
+![Home Section](screenshots/home.png)
+*Main portfolio landing page with liquid glass effects*
+
+### 🎨 Customizer Tool
+![Customizer](screenshots/customize.png)
+*Advanced color customization panel with depth controls*
+
+### 🌈 Color Picker
+![Color Wheel](screenshots/Color-wheel.png)
+*Canvas-based color selection with HSL controls*
+
+### 📊 Visitor Analytics
+![Visitor Counter](screenshots/visitors.png)
+*Real-time visitor tracking with geographic data*
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (version 14 or higher)
-- A modern web browser
-- Your resume PDF file
+- Node.js (v18 or higher)
+- npm or yarn
 
 ### Installation
+```bash
+# Clone the repository
+git clone https://github.com/Soham-Chousalkar/Portfolio.git
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/portfolio.git
-   cd portfolio
-   ```
+# Navigate to the project directory
+cd Portfolio
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+# Switch to the liquid glass branch
+git checkout liquid-glass-portfolio
 
-3. **Customize your content**
-   - Edit `config.js` to update your personal information and exhibits
-   - Replace `Soham_Resume.pdf` with your own resume file
-   - Update the title in `index.html` if needed
+# Install dependencies
+npm install
 
-4. **Run locally**
-   ```bash
-   npm run dev
-   ```
+# Start development server
+npm run dev
 
-5. **Build for production**
-   ```bash
-   npm run build
-   ```
+# Build for production
+npm run build
 
-## 🎯 How to Customize
-
-### 1. Personal Information
-Edit the `personal` section in `config.js`:
-```javascript
-personal: {
-    name: "Your Name",
-    title: "Your Title",
-    description: "Your description",
-    email: "your.email@example.com",
-    linkedin: "https://linkedin.com/in/yourprofile",
-    github: "https://github.com/yourusername"
-}
+# Start backend server (for visitor tracking)
+npm run server
 ```
 
-### 2. Adding New Exhibits
-To add a new exhibit, copy an existing one in the `exhibits` array and modify:
+## 🎯 Key Features Explained
 
-```javascript
-{
-    id: "unique-id",
-    title: "Exhibit Title",
-    category: "Category",
-    position: { x: -8, z: -8 }, // Position on the field
-    shortDescription: "Brief description",
-    content: `
-        <h3>Your Content</h3>
-        <p>Your detailed content here...</p>
-    `,
-    icon: "🎯" // Choose an emoji icon
-}
+### **Liquid Glass Effects**
+- `backdrop-filter: blur()` for frosted glass appearance
+- `rgba()` backgrounds for transparency
+- Subtle box-shadows for depth
+- Animated background patterns
+
+### **Color Customizer**
+- Individual color controls for each UI element
+- Real-time HSL to Hex conversion
+- Canvas-based color picker
+- Automatic text color inversion for contrast
+
+### **World Clock**
+- JavaScript Date object manipulation
+- Manual timezone offset calculations
+- Real-time updates every second
+- Responsive design for mobile
+
+### **Visitor Tracking**
+- Express.js backend API
+- JSON file storage for development
+- Geographic location simulation
+- Interactive charts with Canvas API
+
+## 📁 Project Structure
 ```
-
-### 3. Position Guidelines
-- **x**: -8 to 8 (left to right)
-- **z**: -8 to 8 (back to front)
-- Keep at least 4 units spacing between exhibits
-- Recommended layout:
-  ```
-  [-8,-8] [0,-8] [8,-8]
-  [-8,0]  [0,0]  [8,0]
-  [-8,8]  [0,8]  [8,8]
-  ```
-
-### 4. Content Formatting
-The `content` field supports HTML, so you can:
-- Use `<h3>`, `<h4>` for headings
-- Add `<ul>`, `<li>` for lists
-- Include `<a href="">` for links
-- Use `<img src="">` for images
-- Add `<video>` for videos
-
-## 🎮 Controls
-
-### Desktop
-- **WASD**: Move around the field
-- **Mouse**: Look around (click to enable pointer lock)
-- **Click**: Interact with exhibits
-- **ESC**: Toggle menu
-
-### Mobile
-- **Touch & Drag**: Look around
-- **Control Buttons**: Move (appear automatically on mobile)
-- **Tap**: Interact with exhibits
-- **Menu Button**: Access navigation
-
-## 📱 Mobile Optimization
-
-The portfolio is specifically optimized for mobile devices:
-- **Portrait Mode**: Primary design focus
-- **Touch Controls**: Intuitive movement and interaction
-- **Responsive UI**: Adapts to different screen sizes
-- **Performance**: Optimized for mobile browsers
+Portfolio/
+├── index.html              # Main HTML file
+├── styles.css              # Liquid glass styling
+├── main.js                 # Frontend functionality
+├── visitor-counter.js      # Visitor tracking
+├── server.js               # Backend API
+├── screenshots/            # Portfolio screenshots
+├── dist/                   # Built files
+└── .github/workflows/      # GitHub Actions
+```
 
 ## 🌐 Deployment
 
-### GitHub Pages (Recommended)
+### GitHub Pages
+- Automatic deployment via GitHub Actions
+- Built files served from `gh-pages` branch
+- Live at: https://soham-chousalkar.github.io/Portfolio/
 
-1. **Push to GitHub**
-   ```bash
-   git add .
-   git commit -m "Initial portfolio setup"
-   git push origin main
-   ```
+### Local Development
+```bash
+# Development server
+npm run dev
 
-2. **Enable GitHub Pages**
-   - Go to your repository settings
-   - Navigate to "Pages"
-   - Select "Deploy from a branch"
-   - Choose "main" branch and "/docs" folder
+# Production build
+npm run build
 
-3. **Build and Deploy**
-   ```bash
-   npm run build
-   # Copy dist folder contents to docs folder
-   git add docs/
-   git commit -m "Deploy portfolio"
-   git push origin main
-   ```
-
-### Other Platforms
-
-- **Netlify**: Drag and drop the `dist` folder
-- **Vercel**: Connect your GitHub repository
-- **Firebase**: Use Firebase Hosting
-- **Any static hosting**: Upload the `dist` folder contents
-
-## 🎨 Customization Tips
-
-### Colors
-The portfolio uses a green theme. To change colors:
-1. Update CSS variables in `styles.css`
-2. Modify the color values in `main.js` for 3D elements
-3. Update the gradient colors in the loading screen
-
-### Layout
-- Adjust `fieldSize` in `config.js` to change the field size
-- Modify `tableSpacing` to change distance between exhibits
-- Update `tableHeight` to change exhibit height
-
-### Performance
-- Reduce the number of decorative elements in `createDecorativeElements()`
-- Lower shadow map resolution for better performance
-- Disable shadows on mobile devices
-
-## 📁 Project Structure
-
-```
-portfolio/
-├── index.html          # Main HTML file
-├── main.js            # 3D scene and interactions
-├── config.js          # Content configuration
-├── styles.css         # Styling and responsive design
-├── package.json       # Dependencies and scripts
-├── Soham_Resume.pdf   # Your resume (replace with yours)
-└── README.md          # This file
+# Preview build
+npm run preview
 ```
 
-## 🔧 Technical Details
+## 🎨 Customization
 
-- **Framework**: Three.js for 3D graphics
-- **Build Tool**: Vite for fast development
-- **Animations**: GSAP for smooth transitions
-- **Styling**: CSS3 with modern features
-- **Responsive**: Mobile-first design approach
+### Color Palette
+The portfolio uses a sophisticated color palette:
+- **Background:** `#dbd3d8` (Light gray-beige)
+- **Navigation:** `#eff1f3` (Off-white)
+- **Text:** `#223843` (Dark blue-gray)
+- **Panels:** `#d77a61` (Warm coral)
+- **Accent:** `#d8b4a0` (Peach)
 
-## 🐛 Troubleshooting
-
-### Common Issues
-
-1. **3D doesn't load**
-   - Check browser console for errors
-   - Ensure WebGL is supported
-   - Try updating your graphics drivers
-
-2. **Mobile controls not working**
-   - Ensure touch events are enabled
-   - Check if mobile controls are visible
-   - Try refreshing the page
-
-3. **Performance issues**
-   - Reduce field size in config
-   - Disable shadows on mobile
-   - Close other browser tabs
-
-### Browser Support
-- Chrome 80+
-- Firefox 75+
-- Safari 13+
-- Edge 80+
+### Adding New Features
+1. **New Sections:** Add to `index.html` and `styles.css`
+2. **Animations:** Use CSS keyframes and transitions
+3. **Interactive Elements:** Extend `main.js` functionality
+4. **Styling:** Follow liquid glass design principles
 
 ## 🤝 Contributing
 
-Feel free to fork this project and customize it for your needs! If you make improvements, consider sharing them back.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## 👨‍💻 Author
 
-- Three.js community for the amazing 3D library
-- GSAP for smooth animations
-- Inter font family for beautiful typography
+**Soham Chousalkar**
+- Full Stack Developer & UI/UX Designer
+- Specializing in modern web technologies
+- Creating beautiful, functional digital experiences
+
+## 🌟 Acknowledgments
+
+- **Liquid Glass Design:** Inspired by modern glassmorphism trends
+- **Color Theory:** Advanced color picker with accessibility in mind
+- **Real-time Features:** World clock and visitor tracking for engagement
+- **Responsive Design:** Mobile-first approach for all devices
 
 ---
 
-**Happy coding! 🚀**
-
-Your interactive portfolio is now ready to impress visitors with a unique and engaging experience! 
+**⭐ Star this repository if you find it helpful!** 
