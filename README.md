@@ -5,37 +5,82 @@ A modern, responsive portfolio website featuring liquid glass effects, real-time
 ## 🚀 Live Demo
 **[View Live Portfolio](https://soham-chousalkar.github.io/Portfolio/)**
 
-## 📸 Screenshots
+## 📸 Portfolio Showcase
 
+### 🏠 Home Page
 <div align="center">
-  <img src="assets/images/home.png" alt="Home Section" width="45%" />
-  <img src="assets/images/customize.png" alt="Customizer Tool" width="45%" />
-  <br><br>
-  <img src="assets/images/Color-wheel.png" alt="Color Picker" width="45%" />
-  <img src="assets/images/visitors.png" alt="Visitor Analytics" width="45%" />
+  <img src="src/assets/images/home.png" alt="Home Section" width="80%" />
 </div>
 
-## ✨ Features
+---
 
-### 🎨 **Liquid Glass Design**
-- Frosted glass panels with backdrop blur effects
-- Subtle shimmer animations and depth
-- Responsive design with smooth transitions
+### 📊 Visitor Analytics
+<div style="display: flex; align-items: center; gap: 2rem;">
+  <div style="flex: 1;">
+    <img src="src/assets/images/visitors.png" alt="Visitor Analytics" width="100%" />
+  </div>
+  <div style="flex: 1;">
+    <h3>Real-Time Visitor Tracking</h3>
+    <p>Track visitors from around the world with geographic location data, visit counts, and interactive analytics. The system automatically updates every 30 seconds and provides detailed insights into your portfolio's reach.</p>
+    <ul>
+      <li>🌍 Geographic location tracking</li>
+      <li>📈 Real-time visit statistics</li>
+      <li>🔄 Auto-refresh every 30 seconds</li>
+      <li>📊 Interactive charts and data</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+### 🎨 Customizer Tool
+<div style="display: flex; align-items: center; gap: 2rem;">
+  <div style="flex: 1;">
+    <h3>Advanced Color Customization</h3>
+    <p>Take full control of your portfolio's appearance with our sophisticated customizer tool. Adjust depth, intensity, and every color element in real-time with instant visual feedback.</p>
+    <ul>
+      <li>🎛️ Depth/Intensity slider control</li>
+      <li>🎨 6 individual color controls</li>
+      <li>⚡ Real-time preview updates</li>
+      <li>🎯 Smart text inversion for contrast</li>
+    </ul>
+  </div>
+  <div style="flex: 1;">
+    <img src="src/assets/images/customize.png" alt="Customizer Tool" width="100%" />
+  </div>
+</div>
+
+---
+
+### 🌈 Color Picker
+<div style="display: flex; align-items: center; gap: 2rem;">
+  <div style="flex: 1;">
+    <img src="src/assets/images/Color-wheel.png" alt="Color Picker" width="100%" />
+  </div>
+  <div style="flex: 1;">
+    <h3>Professional Color Selection</h3>
+    <p>Experience the most advanced color picker with canvas-based selection, HSL controls, and hex input. Perfect for designers and developers who demand precision in their color choices.</p>
+    <ul>
+      <li>🎨 Canvas-based color selection</li>
+      <li>🌈 HSL slider controls</li>
+      <li>🔢 Hex code input support</li>
+      <li>✨ Instant color preview</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+## ✨ Key Features
 
 ### 🌍 **World Clock**
-- Real-time display for 5 timezones:
-  - 🇮🇳 Hyderabad (IST)
-  - 🇬🇧 London (GMT/BST)
-  - 🇺🇸 Arizona (MST)
-  - 🇺🇸 Texas (CST)
-  - 🇺🇸 Dayton (EST)
+Real-time display for 5 timezones: 🇮🇳 Hyderabad, 🇬🇧 London, 🇺🇸 Arizona, 🇺🇸 Texas, 🇺🇸 Dayton
 
-### 🎛️ **Advanced Customizer Tool**
-- **Depth/Intensity Slider:** Control blur and shadow effects
-- **Color Palette Picker:** 6 individual color controls
-- **Real-time Preview:** Canvas-based color selection
-- **HSL/Hex Input:** Multiple color input methods
-- **Smart Text Inversion:** Automatic contrast adjustment
+### 🎛️ **Advanced Customizer**
+- Depth/Intensity slider for blur effects
+- 6 individual color controls
+- Real-time preview with instant feedback
+- Smart text inversion for optimal contrast
 
 ### 📊 **Visitor Analytics**
 - Real-time visitor counter
@@ -43,7 +88,7 @@ A modern, responsive portfolio website featuring liquid glass effects, real-time
 - Interactive charts and statistics
 - Auto-refresh every 30 seconds
 
-## 🛠️ Technologies Used
+## 🛠️ Technologies
 
 - **Frontend:** HTML5, CSS3, JavaScript (ES6+)
 - **Build Tool:** Vite
@@ -75,33 +120,34 @@ npm run server
 ```
 Portfolio/
 ├── index.html              # Main HTML file
-├── styles.css              # Liquid glass styling
-├── main.js                 # Frontend functionality
-├── scripts/                # JavaScript utilities
-│   ├── visitor-counter.js  # Visitor tracking
-│   ├── deployment-status.js # Status checker
-│   └── deploy.sh          # Deployment script
-├── tools/                  # Development tools
-│   ├── check-deployment.md # Deployment guide
-│   └── tatus              # Status file
-├── assets/                 # Static assets
-│   ├── data/              # JSON data files
-│   │   ├── visits.json    # Visit data
-│   │   └── visitors.json  # Visitor data
-│   └── images/            # Images and screenshots
-│       ├── home.png       # Home screenshot
-│       ├── customize.png  # Customizer screenshot
-│       ├── Color-wheel.png # Color picker screenshot
-│       ├── visitors.png   # Visitor analytics screenshot
-│       └── Soham_Resume.pdf # Resume
-├── server.js               # Backend API
+├── src/
+│   ├── components/         # JavaScript components
+│   │   └── main.js        # Frontend functionality
+│   ├── styles/            # CSS styling
+│   │   └── styles.css     # Liquid glass styling
+│   ├── utils/             # Utility scripts
+│   │   ├── visitor-counter.js  # Visitor tracking
+│   │   ├── server.js      # Backend API
+│   │   ├── deployment-status.js # Status checker
+│   │   ├── deploy.sh      # Deployment script
+│   │   ├── check-deployment.md # Deployment guide
+│   │   └── tatus          # Status file
+│   └── assets/            # Static assets
+│       ├── data/          # JSON data files
+│       │   ├── visits.json    # Visit data
+│       │   └── visitors.json  # Visitor data
+│       └── images/        # Images and screenshots
+│           ├── home.png       # Home screenshot
+│           ├── customize.png  # Customizer screenshot
+│           ├── Color-wheel.png # Color picker screenshot
+│           ├── visitors.png   # Visitor analytics screenshot
+│           └── Soham_Resume.pdf # Resume
 ├── dist/                   # Built files
 └── .github/workflows/      # GitHub Actions
 ```
 
 ## 🎨 Color Palette
 
-The portfolio uses a sophisticated color palette:
 - **Background:** `#dbd3d8` (Light gray-beige)
 - **Navigation:** `#eff1f3` (Off-white)
 - **Text:** `#223843` (Dark blue-gray)
