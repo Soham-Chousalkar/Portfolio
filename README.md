@@ -17,7 +17,7 @@ A modern, responsive portfolio website featuring liquid glass effects, real-time
 ### 📊 Visitor Analytics
 <div style="display: flex; align-items: center; gap: 2rem;">
   <div style="flex: 1;">
-    <img src="src/assets/images/visitors.png" alt="Visitor Analytics" width="10%" />
+    <img src="src/assets/images/visitors.png" alt="Visitor Analytics" width="16.67%" />
   </div>
   <div style="flex: 1;">
     <h3>Real-Time Visitor Tracking</h3>
@@ -46,7 +46,7 @@ A modern, responsive portfolio website featuring liquid glass effects, real-time
     </ul>
   </div>
   <div style="flex: 1;">
-    <img src="src/assets/images/customize.png" alt="Customizer Tool" width="10%" />
+    <img src="src/assets/images/customize.png" alt="Customizer Tool" width="16.67%" />
   </div>
 </div>
 
@@ -55,7 +55,7 @@ A modern, responsive portfolio website featuring liquid glass effects, real-time
 ### 🌈 Color Picker
 <div style="display: flex; align-items: center; gap: 2rem;">
   <div style="flex: 1;">
-    <img src="src/assets/images/Color-wheel.png" alt="Color Picker" width="10%" />
+    <img src="src/assets/images/Color-wheel.png" alt="Color Picker" width="16.67%" />
   </div>
   <div style="flex: 1;">
     <h3>Professional Color Selection</h3>
