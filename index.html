@@ -11,6 +11,47 @@
 </head>
 
 <body>
+    <!-- World Clock -->
+    <div class="world-clock">
+        <div class="clock-container">
+            <div class="clock-item">
+                <div class="clock-icon">🇮🇳</div>
+                <div class="clock-info">
+                    <div class="city-name">Hyderabad</div>
+                    <div class="time" id="hyderabad-time">--:--</div>
+                </div>
+            </div>
+            <div class="clock-item">
+                <div class="clock-icon">🇬🇧</div>
+                <div class="clock-info">
+                    <div class="city-name">London</div>
+                    <div class="time" id="london-time">--:--</div>
+                </div>
+            </div>
+            <div class="clock-item">
+                <div class="clock-icon">🇺🇸</div>
+                <div class="clock-info">
+                    <div class="city-name">Arizona</div>
+                    <div class="time" id="arizona-time">--:--</div>
+                </div>
+            </div>
+            <div class="clock-item">
+                <div class="clock-icon">🇺🇸</div>
+                <div class="clock-info">
+                    <div class="city-name">Texas</div>
+                    <div class="time" id="texas-time">--:--</div>
+                </div>
+            </div>
+            <div class="clock-item">
+                <div class="clock-icon">🇺🇸</div>
+                <div class="clock-info">
+                    <div class="city-name">Dayton</div>
+                    <div class="time" id="dayton-time">--:--</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Customizer Tool -->
     <div class="customizer-tool">
         <div class="customizer-button">
@@ -23,7 +64,76 @@
                 <input type="range" id="depth-slider" class="depth-slider" min="0" max="100" value="50">
                 <div class="depth-value">50%</div>
             </div>
-            <button class="color-palette-btn">Change Color Palette</button>
+            <div class="color-pickers">
+                <h4>Color Palette</h4>
+                <div class="color-buttons">
+                    <button class="color-btn" data-color="#dbd3d8" data-target="background"
+                        style="background: #dbd3d8;">
+                        <span class="color-label">Background</span>
+                    </button>
+                    <button class="color-btn" data-color="#eff1f3" data-target="nav" style="background: #eff1f3;">
+                        <span class="color-label">Navigation</span>
+                    </button>
+                    <button class="color-btn" data-color="#223843" data-target="text" style="background: #223843;">
+                        <span class="color-label">Text</span>
+                    </button>
+                    <button class="color-btn" data-color="#d77a61" data-target="panels" style="background: #d77a61;">
+                        <span class="color-label">Panels</span>
+                    </button>
+                    <button class="color-btn" data-color="#d8b4a0" data-target="accent" style="background: #d8b4a0;">
+                        <span class="color-label">Accent</span>
+                    </button>
+                    <button class="color-btn" data-color="#239241243" data-target="borders"
+                        style="background: #eff1f3;">
+                        <span class="color-label">Borders</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Color Picker Modal -->
+    <div class="color-picker-modal" id="color-picker-modal">
+        <div class="color-picker-content">
+            <div class="color-picker-header">
+                <span class="color-picker-title">Color Picker</span>
+                <button class="color-picker-close" id="color-picker-close">×</button>
+            </div>
+            <div class="color-picker-body">
+                <div class="color-picker-main">
+                    <div class="color-picker-canvas-container">
+                        <canvas id="color-picker-canvas" width="200" height="200"></canvas>
+                        <div class="color-picker-cursor" id="color-picker-cursor"></div>
+                    </div>
+                    <div class="color-picker-hue-slider">
+                        <canvas id="hue-canvas" width="30" height="200"></canvas>
+                        <div class="hue-cursor" id="hue-cursor"></div>
+                    </div>
+                </div>
+                <div class="color-picker-controls">
+                    <div class="color-preview">
+                        <div class="color-preview-box" id="color-preview-box"></div>
+                        <input type="text" id="hex-input" class="hex-input" placeholder="#000000">
+                    </div>
+                    <div class="color-controls">
+                        <div class="control-group">
+                            <label>Hue</label>
+                            <input type="range" id="hue-slider" min="0" max="360" value="0">
+                        </div>
+                        <div class="control-group">
+                            <label>Saturation</label>
+                            <input type="range" id="saturation-slider" min="0" max="100" value="100">
+                        </div>
+                        <div class="control-group">
+                            <label>Lightness</label>
+                            <input type="range" id="lightness-slider" min="0" max="100" value="50">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="color-picker-footer">
+                <button class="apply-color-btn" id="apply-color-btn">Apply Color</button>
+            </div>
         </div>
     </div>
 
@@ -90,13 +200,13 @@
                 <div class="content-grid">
                     <div class="text-content">
                         <p>
-                            I'm a passionate full-stack developer with a keen eye for design and user experience. 
-                            With expertise in modern web technologies, I create seamless digital solutions that 
+                            I'm a passionate full-stack developer with a keen eye for design and user experience.
+                            With expertise in modern web technologies, I create seamless digital solutions that
                             bridge the gap between functionality and aesthetics.
                         </p>
                         <p>
-                            My journey in web development started with curiosity and has evolved into a deep 
-                            understanding of both frontend and backend technologies. I believe in writing clean, 
+                            My journey in web development started with curiosity and has evolved into a deep
+                            understanding of both frontend and backend technologies. I believe in writing clean,
                             maintainable code and creating intuitive user interfaces.
                         </p>
                     </div>
@@ -129,7 +239,8 @@
                             <h3>Senior Full Stack Developer</h3>
                             <div class="company">TechCorp Solutions</div>
                             <div class="duration">2022 - Present</div>
-                            <p>Leading development of scalable web applications using React, Node.js, and cloud technologies.</p>
+                            <p>Leading development of scalable web applications using React, Node.js, and cloud
+                                technologies.</p>
                         </div>
                     </div>
                     <div class="timeline-item">
@@ -161,7 +272,8 @@
                 <div class="projects-grid">
                     <div class="project-card">
                         <h3>E-Commerce Platform</h3>
-                        <p>A full-stack e-commerce solution with payment integration, user authentication, and admin dashboard.</p>
+                        <p>A full-stack e-commerce solution with payment integration, user authentication, and admin
+                            dashboard.</p>
                         <div class="tech-stack">
                             <span class="tech-tag">React</span>
                             <span class="tech-tag">Node.js</span>
@@ -171,7 +283,8 @@
                     </div>
                     <div class="project-card">
                         <h3>Task Management App</h3>
-                        <p>A collaborative task management application with real-time updates and team collaboration features.</p>
+                        <p>A collaborative task management application with real-time updates and team collaboration
+                            features.</p>
                         <div class="tech-stack">
                             <span class="tech-tag">Vue.js</span>
                             <span class="tech-tag">Express</span>
@@ -253,7 +366,7 @@
                     <div class="institution">University of Technology</div>
                     <div class="duration">2018 - 2022</div>
                     <p>
-                        Graduated with honors, specializing in software engineering and web development. 
+                        Graduated with honors, specializing in software engineering and web development.
                         Completed capstone project on scalable web applications.
                     </p>
                 </div>
@@ -290,7 +403,7 @@
                 <h2>Get In Touch</h2>
                 <div class="contact-content">
                     <p>
-                        I'm always open to discussing new opportunities, interesting projects, 
+                        I'm always open to discussing new opportunities, interesting projects,
                         or just having a chat about technology and design.
                     </p>
                     <div class="contact-methods">
