@@ -15,12 +15,24 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('dist'));
 
-// Data storage
-const VISITORS_FILE = 'assets/data/visitors.json';
-const VISITS_FILE = 'assets/data/visits.json';
+// Data storage - Fixed paths
+const VISITORS_FILE = path.join(__dirname, 'assets/data/visitors.json');
+const VISITS_FILE = path.join(__dirname, 'assets/data/visits.json');
+
+// Ensure data directory exists
+async function ensureDataDirectory() {
+    const dataDir = path.dirname(VISITORS_FILE);
+    try {
+        await fs.access(dataDir);
+    } catch {
+        await fs.mkdir(dataDir, { recursive: true });
+    }
+}
 
 // Initialize data files if they don't exist
 async function initializeData() {
+    await ensureDataDirectory();
+    
     try {
         await fs.access(VISITORS_FILE);
     } catch {
@@ -39,14 +51,19 @@ async function loadVisitors() {
     try {
         const data = await fs.readFile(VISITORS_FILE, 'utf8');
         return JSON.parse(data);
-    } catch {
+    } catch (error) {
+        console.error('Error loading visitors:', error);
         return {};
     }
 }
 
 // Save visitors data
 async function saveVisitors(visitors) {
-    await fs.writeFile(VISITORS_FILE, JSON.stringify(visitors, null, 2));
+    try {
+        await fs.writeFile(VISITORS_FILE, JSON.stringify(visitors, null, 2));
+    } catch (error) {
+        console.error('Error saving visitors:', error);
+    }
 }
 
 // Load visits data
@@ -54,14 +71,19 @@ async function loadVisits() {
     try {
         const data = await fs.readFile(VISITS_FILE, 'utf8');
         return JSON.parse(data);
-    } catch {
+    } catch (error) {
+        console.error('Error loading visits:', error);
         return [];
     }
 }
 
 // Save visits data
 async function saveVisits(visits) {
-    await fs.writeFile(VISITS_FILE, JSON.stringify(visits, null, 2));
+    try {
+        await fs.writeFile(VISITS_FILE, JSON.stringify(visits, null, 2));
+    } catch (error) {
+        console.error('Error saving visits:', error);
+    }
 }
 
 // Get visitor location from IP
@@ -153,6 +175,8 @@ app.post('/api/visit', async (req, res) => {
         await saveVisitors(visitors);
         await saveVisits(visits);
         
+        console.log(`Visit recorded: ${Object.keys(visitors).length} total visitors, ${visits.length} total visits`);
+        
         res.json({
             success: true,
             visitorId: visitorId,
@@ -202,7 +226,7 @@ app.get('/api/stats', async (req, res) => {
 
 // Serve the main application
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
 });
 
 // Initialize and start server

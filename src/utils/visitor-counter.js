@@ -8,6 +8,7 @@ class VisitorCounter {
         };
         this.isExpanded = false;
         this.chart = null;
+        this.autoRefreshInterval = null;
         this.init();
     }
 
@@ -60,6 +61,7 @@ class VisitorCounter {
 
     async recordVisit() {
         try {
+            console.log('Recording visit...');
             const response = await fetch('/api/visit', {
                 method: 'POST',
                 headers: {
@@ -69,20 +71,33 @@ class VisitorCounter {
             
             if (response.ok) {
                 const data = await response.json();
+                console.log('Visit recorded successfully:', data);
                 this.updateCounter(data.totalVisitors);
+                this.stats.totalVisitors = data.totalVisitors;
+                this.stats.totalVisits = data.totalVisits;
+            } else {
+                console.error('Failed to record visit:', response.status);
             }
         } catch (error) {
             console.error('Error recording visit:', error);
+            // Fallback: increment counter locally if server is unavailable
+            this.stats.totalVisitors++;
+            this.updateCounter(this.stats.totalVisitors);
         }
     }
 
     async loadStats() {
         try {
+            console.log('Loading stats...');
             const response = await fetch('/api/stats');
             if (response.ok) {
-                this.stats = await response.json();
+                const data = await response.json();
+                console.log('Stats loaded:', data);
+                this.stats = data;
                 this.updateStats();
                 this.createLocationChart();
+            } else {
+                console.error('Failed to load stats:', response.status);
             }
         } catch (error) {
             console.error('Error loading stats:', error);
@@ -92,7 +107,7 @@ class VisitorCounter {
     updateCounter(count) {
         const counterElement = document.getElementById('visitor-count');
         if (counterElement) {
-            this.animateNumber(counterElement, parseInt(counterElement.textContent), count);
+            this.animateNumber(counterElement, parseInt(counterElement.textContent) || 0, count);
         }
     }
 
@@ -101,11 +116,11 @@ class VisitorCounter {
         const totalVisitsElement = document.getElementById('total-visits');
         
         if (totalVisitorsElement) {
-            this.animateNumber(totalVisitorsElement, parseInt(totalVisitorsElement.textContent), this.stats.totalVisitors);
+            this.animateNumber(totalVisitorsElement, parseInt(totalVisitorsElement.textContent) || 0, this.stats.totalVisitors);
         }
         
         if (totalVisitsElement) {
-            this.animateNumber(totalVisitsElement, parseInt(totalVisitsElement.textContent), this.stats.totalVisits);
+            this.animateNumber(totalVisitsElement, parseInt(totalVisitsElement.textContent) || 0, this.stats.totalVisits);
         }
     }
 
@@ -118,7 +133,7 @@ class VisitorCounter {
             const progress = Math.min(elapsed / duration, 1);
             
             const current = Math.floor(start + (end - start) * this.easeOutQuart(progress));
-            element.textContent = current.toLocaleString();
+            element.textContent = current;
             
             if (progress < 1) {
                 requestAnimationFrame(animate);
@@ -133,70 +148,73 @@ class VisitorCounter {
     }
 
     expand() {
-        if (this.isExpanded) return;
-        
-        this.isExpanded = true;
-        this.container.classList.add('expanded');
-        
-        // Add neon glow effect
-        this.container.style.boxShadow = '0 0 20px rgba(0, 255, 255, 0.6), 0 0 40px rgba(0, 255, 255, 0.3)';
+        if (this.container) {
+            this.container.classList.add('expanded');
+            this.isExpanded = true;
+        }
     }
 
     collapse() {
-        if (!this.isExpanded) return;
-        
-        this.isExpanded = false;
-        this.container.classList.remove('expanded');
-        
-        // Remove neon glow effect
-        this.container.style.boxShadow = '';
+        if (this.container) {
+            this.container.classList.remove('expanded');
+            this.isExpanded = false;
+        }
     }
 
     createLocationChart() {
         const canvas = document.getElementById('location-chart');
-        if (!canvas) return;
+        if (!canvas || !this.stats.locationStats) return;
 
         const ctx = canvas.getContext('2d');
-        
-        // Create a simple bar chart for countries
         const countries = Object.keys(this.stats.locationStats);
-        const counts = countries.map(country => this.stats.locationStats[country].total);
-        
-        const maxCount = Math.max(...counts);
-        const barWidth = canvas.width / countries.length;
-        
+        const data = countries.map(country => this.stats.locationStats[country].total);
+
+        if (data.length === 0) return;
+
         // Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Draw bars with neon effect
-        countries.forEach((country, index) => {
-            const height = (counts[index] / maxCount) * (canvas.height - 40);
-            const x = index * barWidth + 10;
-            const y = canvas.height - height - 20;
-            
-            // Neon glow
-            ctx.shadowColor = '#00ffff';
-            ctx.shadowBlur = 10;
-            ctx.fillStyle = '#00ffff';
-            ctx.fillRect(x, y, barWidth - 20, height);
-            
-            // Reset shadow
-            ctx.shadowBlur = 0;
-            
-            // Draw text
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '12px monospace';
+
+        // Draw simple bar chart
+        const barWidth = canvas.width / data.length;
+        const maxValue = Math.max(...data);
+        const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'];
+
+        data.forEach((value, index) => {
+            const barHeight = (value / maxValue) * (canvas.height - 40);
+            const x = index * barWidth;
+            const y = canvas.height - barHeight - 20;
+
+            ctx.fillStyle = colors[index % colors.length];
+            ctx.fillRect(x + 5, y, barWidth - 10, barHeight);
+
+            // Draw country name
+            ctx.fillStyle = '#333';
+            ctx.font = '10px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText(country, x + (barWidth - 20) / 2, canvas.height - 5);
-            ctx.fillText(counts[index], x + (barWidth - 20) / 2, y - 10);
+            ctx.fillText(countries[index], x + barWidth / 2, canvas.height - 5);
         });
     }
 
     startAutoRefresh() {
-        // Refresh stats every 30 seconds
-        setInterval(() => {
-            this.loadStats();
-        }, 30000);
+        // Clear existing interval
+        if (this.autoRefreshInterval) {
+            clearInterval(this.autoRefreshInterval);
+        }
+        
+        // Start new interval
+        this.autoRefreshInterval = setInterval(async () => {
+            console.log('Auto-refreshing stats...');
+            await this.loadStats();
+        }, 30000); // Refresh every 30 seconds
+    }
+
+    destroy() {
+        if (this.autoRefreshInterval) {
+            clearInterval(this.autoRefreshInterval);
+        }
+        if (this.container) {
+            this.container.remove();
+        }
     }
 }
 

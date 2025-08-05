@@ -1,12 +1,196 @@
 // Minimalist Portfolio JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
-    // World Clock Functionality
+    // Edit Mode Management
+    let isEditMode = false;
+    let editSessionExpiry = null;
+    const EDIT_PASSWORD = 'admin123'; // Change this to your desired password
+    const SESSION_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+
+    // Check if edit session is still valid
+    function checkEditSession() {
+        const sessionData = localStorage.getItem('editSession');
+        if (sessionData) {
+            const session = JSON.parse(sessionData);
+            if (Date.now() < session.expiry) {
+                isEditMode = true;
+                editSessionExpiry = session.expiry;
+                enableEditMode();
+                return true;
+            } else {
+                localStorage.removeItem('editSession');
+            }
+        }
+        return false;
+    }
+
+    // Save edit session
+    function saveEditSession() {
+        const session = {
+            expiry: Date.now() + SESSION_DURATION
+        };
+        localStorage.setItem('editSession', JSON.stringify(session));
+        editSessionExpiry = session.expiry;
+    }
+
+    // Enable edit mode
+    function enableEditMode() {
+        isEditMode = true;
+        document.body.classList.add('edit-mode');
+        addEditIcons();
+    }
+
+    // Disable edit mode
+    function disableEditMode() {
+        isEditMode = false;
+        document.body.classList.remove('edit-mode');
+        removeEditIcons();
+    }
+
+    // Add edit icons to content panels
+    function addEditIcons() {
+        const contentPanels = document.querySelectorAll('.voxel-island, .hero-content, .text-content, .timeline-content, .project-card, .skill-category, .education-item, .achievement-card, .contact-content');
+        
+        contentPanels.forEach(panel => {
+            if (!panel.querySelector('.edit-icon')) {
+                const editIcon = document.createElement('div');
+                editIcon.className = 'edit-icon';
+                editIcon.innerHTML = '✏️';
+                editIcon.style.cssText = `
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    cursor: pointer;
+                    opacity: 0;
+                    transition: opacity 0.3s;
+                    z-index: 1000;
+                    background: rgba(255, 255, 255, 0.9);
+                    border-radius: 50%;
+                    width: 30px;
+                    height: 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 14px;
+                `;
+                
+                panel.style.position = 'relative';
+                panel.appendChild(editIcon);
+                
+                // Show edit icon on hover
+                panel.addEventListener('mouseenter', () => {
+                    editIcon.style.opacity = '1';
+                });
+                
+                panel.addEventListener('mouseleave', () => {
+                    editIcon.style.opacity = '0';
+                });
+                
+                // Make content editable on click
+                editIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    makeContentEditable(panel);
+                });
+            }
+        });
+    }
+
+    // Remove edit icons
+    function removeEditIcons() {
+        const editIcons = document.querySelectorAll('.edit-icon');
+        editIcons.forEach(icon => icon.remove());
+    }
+
+    // Make content editable
+    function makeContentEditable(panel) {
+        const editableElements = panel.querySelectorAll('h1, h2, h3, p, span, div');
+        
+        editableElements.forEach(element => {
+            if (!element.classList.contains('no-edit')) {
+                element.contentEditable = true;
+                element.style.outline = '2px dashed #007bff';
+                element.style.padding = '2px';
+                
+                element.addEventListener('blur', () => {
+                    element.contentEditable = false;
+                    element.style.outline = '';
+                    element.style.padding = '';
+                });
+                
+                element.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && e.target.tagName !== 'P') {
+                        e.preventDefault();
+                        e.target.blur();
+                    }
+                });
+            }
+        });
+    }
+
+    // Password prompt for edit mode
+    function showPasswordPrompt() {
+        const password = prompt('Enter password to enable edit mode:');
+        if (password === EDIT_PASSWORD) {
+            enableEditMode();
+            saveEditSession();
+            showNotification('Edit mode enabled for 1 hour', 'success');
+        } else if (password !== null) {
+            showNotification('Incorrect password', 'error');
+        }
+    }
+
+    // Add edit mode trigger
+    function addEditModeTrigger() {
+        const editTrigger = document.createElement('div');
+        editTrigger.className = 'edit-mode-trigger';
+        editTrigger.innerHTML = '🔧';
+        editTrigger.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            font-size: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        `;
+        
+        editTrigger.addEventListener('mouseenter', () => {
+            editTrigger.style.transform = 'scale(1.1)';
+        });
+        
+        editTrigger.addEventListener('mouseleave', () => {
+            editTrigger.style.transform = 'scale(1)';
+        });
+        
+        editTrigger.addEventListener('click', () => {
+            if (!isEditMode) {
+                showPasswordPrompt();
+            } else {
+                disableEditMode();
+                showNotification('Edit mode disabled', 'info');
+            }
+        });
+        
+        document.body.appendChild(editTrigger);
+    }
+
+    // World Clock Functionality - Fixed
     function updateWorldClock() {
         const now = new Date();
         
+        // Get timezone offsets
+        const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+        
         // Hyderabad (IST - UTC+5:30)
-        const hyderabadTime = new Date(now.getTime() + (5.5 * 60 * 60 * 1000));
+        const hyderabadTime = new Date(utc + (5.5 * 60 * 60 * 1000));
         document.getElementById('hyderabad-time').textContent = hyderabadTime.toLocaleTimeString('en-US', {
             hour12: false,
             hour: '2-digit',
@@ -14,17 +198,31 @@ document.addEventListener('DOMContentLoaded', function() {
             second: '2-digit'
         });
         
-        // London (GMT/BST - UTC+0/+1)
-        const londonTime = new Date(now.getTime());
-        document.getElementById('london-time').textContent = londonTime.toLocaleTimeString('en-US', {
+        // London (GMT/BST - UTC+0/+1) - Check if DST is in effect
+        const londonTime = new Date(utc);
+        const londonOffset = londonTime.getTimezoneOffset();
+        const londonDST = new Date(londonTime.getFullYear(), 2, 31).getDay();
+        const londonDSTStart = new Date(londonTime.getFullYear(), 2, 31 - londonDST);
+        const londonDSTEnd = new Date(londonTime.getFullYear(), 9, 31 - new Date(londonTime.getFullYear(), 9, 31).getDay());
+        
+        let londonAdjustedTime;
+        if (londonTime >= londonDSTStart && londonTime < londonDSTEnd) {
+            // BST (British Summer Time) - UTC+1
+            londonAdjustedTime = new Date(utc + (1 * 60 * 60 * 1000));
+        } else {
+            // GMT (Greenwich Mean Time) - UTC+0
+            londonAdjustedTime = new Date(utc);
+        }
+        
+        document.getElementById('london-time').textContent = londonAdjustedTime.toLocaleTimeString('en-US', {
             hour12: false,
             hour: '2-digit',
             minute: '2-digit',
             second: '2-digit'
         });
         
-        // Arizona (MST - UTC-7)
-        const arizonaTime = new Date(now.getTime() - (7 * 60 * 60 * 1000));
+        // Arizona (MST - UTC-7) - No DST
+        const arizonaTime = new Date(utc - (7 * 60 * 60 * 1000));
         document.getElementById('arizona-time').textContent = arizonaTime.toLocaleTimeString('en-US', {
             hour12: false,
             hour: '2-digit',
@@ -32,28 +230,56 @@ document.addEventListener('DOMContentLoaded', function() {
             second: '2-digit'
         });
         
-                            // Texas (CST - UTC-6)
-                    const texasTime = new Date(now.getTime() - (6 * 60 * 60 * 1000));
-                    document.getElementById('texas-time').textContent = texasTime.toLocaleTimeString('en-US', {
-                        hour12: false,
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-
-                    // Dayton (EST - UTC-5)
-                    const daytonTime = new Date(now.getTime() - (5 * 60 * 60 * 1000));
-                    document.getElementById('dayton-time').textContent = daytonTime.toLocaleTimeString('en-US', {
-                        hour12: false,
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-                }
+        // Texas (CST - UTC-6) - Check if DST is in effect
+        const texasTime = new Date(utc - (6 * 60 * 60 * 1000));
+        const texasDSTStart = new Date(texasTime.getFullYear(), 2, 14 - new Date(texasTime.getFullYear(), 2, 14).getDay());
+        const texasDSTEnd = new Date(texasTime.getFullYear(), 10, 7 - new Date(texasTime.getFullYear(), 10, 7).getDay());
+        
+        let texasAdjustedTime;
+        if (texasTime >= texasDSTStart && texasTime < texasDSTEnd) {
+            // CDT (Central Daylight Time) - UTC-5
+            texasAdjustedTime = new Date(utc - (5 * 60 * 60 * 1000));
+        } else {
+            // CST (Central Standard Time) - UTC-6
+            texasAdjustedTime = new Date(utc - (6 * 60 * 60 * 1000));
+        }
+        
+        document.getElementById('texas-time').textContent = texasAdjustedTime.toLocaleTimeString('en-US', {
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        
+        // Dayton (EST - UTC-5) - Check if DST is in effect
+        const daytonTime = new Date(utc - (5 * 60 * 60 * 1000));
+        const daytonDSTStart = new Date(daytonTime.getFullYear(), 2, 14 - new Date(daytonTime.getFullYear(), 2, 14).getDay());
+        const daytonDSTEnd = new Date(daytonTime.getFullYear(), 10, 7 - new Date(daytonTime.getFullYear(), 10, 7).getDay());
+        
+        let daytonAdjustedTime;
+        if (daytonTime >= daytonDSTStart && daytonTime < daytonDSTEnd) {
+            // EDT (Eastern Daylight Time) - UTC-4
+            daytonAdjustedTime = new Date(utc - (4 * 60 * 60 * 1000));
+        } else {
+            // EST (Eastern Standard Time) - UTC-5
+            daytonAdjustedTime = new Date(utc - (5 * 60 * 60 * 1000));
+        }
+        
+        document.getElementById('dayton-time').textContent = daytonAdjustedTime.toLocaleTimeString('en-US', {
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+    }
     
     // Update clock immediately and then every second
     updateWorldClock();
     setInterval(updateWorldClock, 1000);
+
+    // Initialize edit mode
+    checkEditSession();
+    addEditModeTrigger();
 
     // Navigation functionality
     const navItems = document.querySelectorAll('.nav-item');
@@ -450,7 +676,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Notification function
-    function showNotification(message) {
+    function showNotification(message, type = 'info') {
         const notification = document.createElement('div');
         notification.style.cssText = `
             position: fixed;
