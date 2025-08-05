@@ -1,0 +1,15 @@
+[
+  {
+    "visitorId": "OjoxTW96aWxsYS81",
+    "timestamp": "2025-08-05T04:39:16.580Z",
+    "ip": "::1",
+    "location": {
+      "country": "United States",
+      "region": "California",
+      "city": "San Francisco",
+      "timezone": "America/Los_Angeles"
+    },
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0",
+    "referer": "http://localhost:3001/"
+  }
+]
