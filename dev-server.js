@@ -53,6 +53,5 @@ console.log('✅ Development servers started!');
 console.log('🌐 Frontend: http://localhost:5173');
 console.log('🔧 Backend: http://localhost:3001');
 console.log('📊 Visitor API: http://localhost:3001/api');
-console.log('\n💡 Edit mode password: admin123');
-console.log('🔧 Click the gear icon in the top-right to enable edit mode');
+
 console.log('\nPress Ctrl+C to stop servers'); 
