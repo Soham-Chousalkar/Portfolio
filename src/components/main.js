@@ -47,3 +47,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 }); 
 
+// Force Vercel rebuild Sun, Sep  7, 2025  7:58:27 PM
