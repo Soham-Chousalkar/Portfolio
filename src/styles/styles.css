@@ -26,7 +26,6 @@
     --section-projects-visible: 1;
     --section-skills-visible: 1;
     --section-education-visible: 1;
-    --section-achievements-visible: 0;
     --section-contact-visible: 1;
 
     /* Dynamic Content Variables */
@@ -289,71 +288,7 @@ body {
     pointer-events: none;
 }
 
-/* Dynamic Navigation - Hide nav items for hidden sections */
-.nav-item[data-target="achievements"] {
-    display: none;
-}
 
-/* Section Management Controls */
-.section-controls-toggle {
-    position: fixed;
-    top: 80px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--text-primary);
-    cursor: pointer;
-    z-index: 10000;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.section-controls-toggle:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.1);
-}
-
-.section-controls {
-    position: fixed;
-    top: 140px;
-    right: 20px;
-    z-index: 10000;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    padding: 10px;
-    display: none;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.section-controls.active {
-    display: block;
-}
-
-.section-toggle {
-    display: block;
-    margin: 5px 0;
-    padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    border-radius: 5px;
-    color: var(--text-primary);
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.3s ease;
-}
-
-.section-toggle:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateX(5px);
-}
 
 /* Liquid Glass Voxel Island - Main Panel */
 .voxel-island {
@@ -731,50 +666,6 @@ body {
     margin-bottom: 1rem;
 }
 
-/* Achievements */
-.achievements-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.achievement-card {
-    background: rgba(215, 122, 97, 0.8);
-    backdrop-filter: blur(10px);
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(239, 241, 243, 0.2);
-    text-align: center;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgba(239, 241, 243, 0.2);
-}
-
-.achievement-card:hover {
-    background: rgba(215, 122, 97, 0.9);
-    transform: translateY(-5px);
-    box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(239, 241, 243, 0.3);
-}
-
-.achievement-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
-
-.achievement-card h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--text-primary);
-}
-
-.achievement-card p {
-    color: var(--text-muted);
-    line-height: 1.6;
-}
 
 /* Contact */
 .contact-content {
@@ -893,9 +784,6 @@ body {
         grid-template-columns: 1fr;
     }
 
-    .achievements-grid {
-        grid-template-columns: 1fr;
-    }
 
     .contact-methods {
         flex-direction: column;
@@ -1198,7 +1086,7 @@ html {
 .time {
     font-size: 1rem;
     font-weight: 700;
-    color: #d8b4a0;
+    color: #000000;
     font-family: 'Courier New', monospace;
     letter-spacing: 1px;
 }
@@ -1327,7 +1215,6 @@ html {
 .edit-mode .project-card:hover .edit-icon,
 .edit-mode .skill-category:hover .edit-icon,
 .edit-mode .education-item:hover .edit-icon,
-.edit-mode .achievement-card:hover .edit-icon,
 .edit-mode .contact-content:hover .edit-icon {
     opacity: 1;
 }
