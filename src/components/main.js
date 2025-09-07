@@ -44,5 +44,61 @@ document.addEventListener('DOMContentLoaded', function() {
         themeToggle.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
     });
+
+    // Section Management System - Ultra Lightweight
+    const sectionControlsToggle = document.querySelector('.section-controls-toggle');
+    const sectionControls = document.querySelector('.section-controls');
+    const sectionToggles = document.querySelectorAll('.section-toggle');
+    
+    // Toggle section controls panel
+    sectionControlsToggle?.addEventListener('click', () => {
+        sectionControls.classList.toggle('active');
+    });
+    
+    // Toggle individual sections
+    sectionToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            const targetSection = e.target.dataset.target;
+            const section = document.querySelector(`[data-section="${targetSection}"]`);
+            const navItem = document.querySelector(`[data-target="${targetSection}"]`);
+            
+            if (section) {
+                const isVisible = section.dataset.visible === 'true';
+                section.dataset.visible = isVisible ? 'false' : 'true';
+                
+                // Update navigation visibility
+                if (navItem) {
+                    navItem.style.display = isVisible ? 'none' : 'flex';
+                }
+                
+                // Update button text
+                e.target.textContent = isVisible ? `Show ${targetSection}` : `Hide ${targetSection}`;
+                
+                // Save preference
+                localStorage.setItem(`section-${targetSection}-visible`, !isVisible);
+            }
+        });
+    });
+    
+    // Load saved section preferences
+    document.querySelectorAll('[data-section]').forEach(section => {
+        const sectionName = section.dataset.section;
+        const savedVisibility = localStorage.getItem(`section-${sectionName}-visible`);
+        if (savedVisibility !== null) {
+            section.dataset.visible = savedVisibility === 'true' ? 'true' : 'false';
+            
+            // Update navigation
+            const navItem = document.querySelector(`[data-target="${sectionName}"]`);
+            if (navItem) {
+                navItem.style.display = savedVisibility === 'true' ? 'flex' : 'none';
+            }
+            
+            // Update toggle button text
+            const toggle = document.querySelector(`[data-target="${sectionName}"]`);
+            if (toggle) {
+                toggle.textContent = savedVisibility === 'true' ? `Hide ${sectionName}` : `Show ${sectionName}`;
+            }
+        }
+    });
 }); 
 

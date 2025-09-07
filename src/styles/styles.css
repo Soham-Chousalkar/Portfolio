@@ -13,6 +13,27 @@
     --accent-secondary: #d8b4a0;
     --border-light: rgba(239, 241, 243, 0.2);
     --shadow-dark: rgba(0, 0, 0, 0.3);
+
+    /* Dynamic Spacing System */
+    --section-min-height: max(50vh, 400px);
+    --section-padding: 2rem;
+    --section-gap: 2rem;
+
+    /* Dynamic Section Visibility Control */
+    --section-home-visible: 1;
+    --section-about-visible: 1;
+    --section-experience-visible: 1;
+    --section-projects-visible: 1;
+    --section-skills-visible: 1;
+    --section-education-visible: 1;
+    --section-achievements-visible: 0;
+    --section-contact-visible: 1;
+
+    /* Dynamic Content Variables */
+    --hero-title: "Soham Chousalkar";
+    --hero-subtitle: "Software Engineer | Computer Science Graduate Student | Research Project in Computer Vision Lab";
+    --about-description-1: "Master's student in Computer Science at the University of Dayton with 2+ years of professional software engineering experience and strong expertise in backend systems, web application security, and computer vision research.";
+    --about-description-2: "Skilled in building secure full-stack applications, data-driven solutions, and applying AI/ML for real-world use cases.";
 }
 
 /* Light theme variables */
@@ -229,7 +250,10 @@ body {
 
 /* Main Content */
 .main-content {
-    padding-bottom: 100px;
+    display: grid;
+    gap: var(--section-gap);
+    padding-top: 120px;
+    padding-bottom: 120px;
     min-height: 100vh;
     position: relative;
     z-index: 2;
@@ -237,28 +261,130 @@ body {
 
 /* Sections */
 .section {
-    min-height: 100vh;
+    min-height: var(--section-min-height);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4rem 2rem;
+    padding: var(--section-padding) 2rem;
     position: relative;
+}
+
+/* Dynamic Section Visibility - CSS Only */
+.section[data-visible="false"] {
+    display: none !important;
+}
+
+.section[data-visible="true"] {
+    display: flex;
+}
+
+/* Smooth transitions for section visibility */
+.section {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.section[data-visible="false"] {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+/* Dynamic Navigation - Hide nav items for hidden sections */
+.nav-item[data-target="achievements"] {
+    display: none;
+}
+
+/* Section Management Controls */
+.section-controls-toggle {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    cursor: pointer;
+    z-index: 10000;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.section-controls-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.section-controls {
+    position: fixed;
+    top: 140px;
+    right: 20px;
+    z-index: 10000;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 10px;
+    display: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.section-controls.active {
+    display: block;
+}
+
+.section-toggle {
+    display: block;
+    margin: 5px 0;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 5px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.section-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateX(5px);
 }
 
 /* Liquid Glass Voxel Island - Main Panel */
 .voxel-island {
-    background: rgba(215, 122, 97, 0.8);
-    backdrop-filter: blur(20px);
-    border-radius: 25px;
-    padding: 3rem;
-    position: relative;
-    max-width: 1200px;
+    /* Panel dimensions */
+    max-width: 1000px;
+    /* Maximum panel width */
     width: 100%;
+    /* Full width up to max-width */
+    padding: 2.5rem;
+    /* Inner spacing */
+    margin: 0 auto;
+    /* Center horizontally */
+
+    /* Visual properties */
+    background: rgba(215, 122, 97, 0.8);
+    /* Panel color with opacity */
+    backdrop-filter: blur(20px);
+    /* Background blur amount */
+    border-radius: 25px;
+    /* Corner roundness */
+    position: relative;
+
+    /* Effects */
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 1px solid rgba(239, 241, 243, 0.2);
+    /* Border thickness */
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.2),
+        /* Outer shadow size/spread */
         inset 0 1px 0 rgba(239, 241, 243, 0.2);
+    /* Inner highlight */
     overflow: hidden;
 }
 
@@ -290,13 +416,13 @@ body {
 }
 
 .hero-content {
-    max-width: 800px;
+    max-width: 700px;
     margin: 0 auto;
     /* Apply glass effect */
     background: rgba(255, 255, 255, var(--glass-opacity));
     backdrop-filter: blur(var(--glass-blur));
     border-radius: var(--glass-radius);
-    padding: 3rem;
+    padding: 2rem;
 }
 
 .hero-content h1 {
@@ -357,7 +483,7 @@ body {
 
 .stat {
     text-align: center;
-    padding: 2rem;
+    padding: 1.5rem;
     /* Apply glass effect */
     background: rgba(255, 255, 255, var(--glass-opacity));
     backdrop-filter: blur(var(--glass-blur));
@@ -430,7 +556,7 @@ body {
     /* Apply glass effect */
     background: rgba(255, 255, 255, var(--glass-opacity));
     backdrop-filter: blur(var(--glass-blur));
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: var(--glass-radius);
     width: 45%;
     margin-left: auto;
@@ -471,15 +597,15 @@ body {
 /* Projects Grid */
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
 }
 
 .project-card {
     /* Apply glass effect */
     background: rgba(255, 255, 255, var(--glass-opacity));
     backdrop-filter: blur(var(--glass-blur));
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: var(--glass-radius);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -522,8 +648,8 @@ body {
 /* Skills Container */
 .skills-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
 }
 
 .skill-category h3 {
@@ -566,12 +692,12 @@ body {
 .education-item {
     background: rgba(215, 122, 97, 0.8);
     backdrop-filter: blur(10px);
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 20px;
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.15),
         inset 0 1px 0 rgba(239, 241, 243, 0.2);
-    max-width: 800px;
+    max-width: 700px;
     margin: 0 auto;
     border: 1px solid rgba(239, 241, 243, 0.2);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -745,6 +871,9 @@ body {
     }
 
     .main-content {
+        display: grid;
+        gap: var(--section-gap);
+        padding-top: 140px;
         padding-bottom: 90px;
     }
 
@@ -788,7 +917,8 @@ body {
     }
 
     .voxel-island {
-        padding: 2rem;
+        padding: 1.5rem;
+        margin: 0 1rem;
     }
 }
 
@@ -818,6 +948,7 @@ html {
         inset 0 1px 0 rgba(239, 241, 243, 0.2);
     min-width: 120px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
 }
 
 .counter-bubble:hover {
@@ -882,7 +1013,9 @@ html {
         inset 0 1px 0 rgba(239, 241, 243, 0.2);
 }
 
-.visitor-counter.expanded .counter-expanded {
+/* Ultra-Optimal CSS-Only Toggle - No JavaScript needed! */
+.counter-bubble:focus-within+.counter-expanded,
+.visitor-counter:focus-within .counter-expanded {
     opacity: 1;
     visibility: visible;
     transform: scale(1) translateY(0);
@@ -1072,8 +1205,10 @@ html {
 
 /* Adjust main content to account for world clock */
 .main-content {
-    padding-top: 100px;
-    padding-bottom: 100px;
+    display: grid;
+    gap: var(--section-gap);
+    padding-top: 120px;
+    padding-bottom: 120px;
     min-height: 100vh;
     position: relative;
     z-index: 2;
@@ -1106,7 +1241,9 @@ html {
     }
 
     .main-content {
-        padding-top: 120px;
+        display: grid;
+        gap: var(--section-gap);
+        padding-top: 140px;
     }
 }
 
@@ -1123,7 +1260,9 @@ html {
     }
 
     .main-content {
-        padding-top: 180px;
+        display: grid;
+        gap: var(--section-gap);
+        padding-top: 200px;
     }
 }
 
@@ -1266,18 +1405,92 @@ html {
     content: "☀️";
 }
 
-/* === ULTRA-MINIMAL GLASS SYSTEM === */
+/* === OPTIMIZED GLASS SYSTEM === */
 :root {
     --glass-opacity: 0.2;
-    /* 0.05 – 0.4 */
     --glass-blur: 15px;
-    /* 5px – 40px */
     --glass-radius: 16px;
-    /* 8px – 40px */
 }
 
 .glass {
     background: rgba(255, 255, 255, var(--glass-opacity));
     backdrop-filter: blur(var(--glass-blur));
     border-radius: var(--glass-radius);
+}
+
+/* Ultra-Optimal CSS-Only Location Chart */
+.location-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+}
+
+.location-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 20px;
+    position: relative;
+}
+
+.location-bar::before {
+    content: attr(data-country);
+    font-size: 10px;
+    color: var(--text-secondary);
+    min-width: 60px;
+    text-align: right;
+    font-weight: 500;
+}
+
+.location-bar::after {
+    content: attr(data-count);
+    font-size: 10px;
+    color: var(--accent-primary);
+    font-weight: 600;
+    min-width: 30px;
+    text-align: left;
+    font-family: 'Courier New', monospace;
+}
+
+.location-bar {
+    background: linear-gradient(90deg,
+            var(--accent-primary) 0%,
+            var(--accent-primary) calc(var(--percentage) * 1%),
+            rgba(239, 241, 243, 0.1) calc(var(--percentage) * 1%));
+    height: 8px;
+    border-radius: 4px;
+    margin-left: 70px;
+    margin-right: 40px;
+    position: relative;
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.location-bar:hover {
+    background: linear-gradient(90deg,
+            var(--accent-secondary) 0%,
+            var(--accent-secondary) calc(var(--percentage) * 1%),
+            rgba(239, 241, 243, 0.2) calc(var(--percentage) * 1%));
+    transform: scaleY(1.2);
+}
+
+/* CSS Custom Properties for Dynamic Bar Widths */
+.location-bar[data-percentage="100"] {
+    --percentage: 100;
+}
+
+.location-bar[data-percentage="60"] {
+    --percentage: 60;
+}
+
+.location-bar[data-percentage="40"] {
+    --percentage: 40;
+}
+
+.location-bar[data-percentage="32"] {
+    --percentage: 32;
+}
+
+.location-bar[data-percentage="20"] {
+    --percentage: 20;
 }

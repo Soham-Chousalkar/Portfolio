@@ -15,6 +15,14 @@
     <!-- Theme Toggle -->
     <button class="theme-toggle" data-theme="dark" title="Toggle theme">☀️</button>
 
+    <!-- Section Management Controls -->
+    <button class="section-controls-toggle" title="Toggle section controls">⚙️</button>
+    <div class="section-controls">
+        <button class="section-toggle" data-target="achievements">Toggle Achievements</button>
+        <button class="section-toggle" data-target="projects">Toggle Projects</button>
+        <button class="section-toggle" data-target="skills">Toggle Skills</button>
+    </div>
+
     <!-- World Clock -->
     <div class="world-clock">
         <div class="clock-container">
@@ -87,7 +95,7 @@
                 <div class="nav-icon">🎓</div>
                 <div class="nav-label">Education</div>
             </a>
-            <a href="#achievements" class="nav-item">
+            <a href="#achievements" class="nav-item" data-target="achievements">
                 <div class="nav-icon">🏆</div>
                 <div class="nav-label">Achievements</div>
             </a>
@@ -101,26 +109,20 @@
     <!-- Main Content -->
     <main class="main-content">
         <!-- Hero Section -->
-        <section id="home" class="section">
+        <section id="home" class="section" data-section="home" data-visible="true">
             <div class="voxel-island">
                 <div class="hero-section">
                     <div class="hero-content">
                         <h1>Soham Chousalkar</h1>
-                        <p class="subtitle">Software Engineer | Computer Science Graduate Student | Research Intern
-                            (Computer Vision & Web Security)</p>
-                        <!-- <p class="description"> -->
-                        <!-- Master’s student in Computer Science at the University of Dayton with 2+ years of
-                        professional software engineering experience and strong expertise in backend systems, web
-                        application security, and computer vision research. Skilled in building secure full-stack
-                        applications, data-driven solutions, and applying AI/ML for real-world use cases. -->
-                        <!-- </p> -->
+                        <p class="subtitle">Software Engineer | Computer Science Graduate Student | Research Project in
+                            Computer Vision Lab</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- About Section -->
-        <section id="about" class="section">
+        <section id="about" class="section" data-section="about" data-visible="true">
             <div class="voxel-island">
                 <h2>About Me</h2>
                 <div class="content-grid">
@@ -154,7 +156,7 @@
         </section>
 
         <!-- Experience Section -->
-        <section id="experience" class="section">
+        <section id="experience" class="section" data-section="experience" data-visible="true">
             <div class="voxel-island">
                 <h2>Experience</h2>
                 <div class="timeline">
@@ -195,7 +197,7 @@
         </section>
 
         <!-- Projects Section -->
-        <section id="projects" class="section">
+        <section id="projects" class="section" data-section="projects" data-visible="true">
             <div class="voxel-island">
                 <h2>Projects</h2>
                 <div class="projects-grid">
@@ -231,12 +233,26 @@
                             <span class="tech-tag">C#</span>
                         </div>
                     </div>
+                    <div class="project-card">
+                        <h3>Pay Check</h3>
+                        <p>Modern time-tracking application with real-time earnings calculation, featuring glassmorphism
+                            UI,
+                            multi-canvas workspace, panel grouping, and cross-platform authentication that streamlines
+                            productivity workflows with 95% user satisfaction.</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">React 19</span>
+                            <span class="tech-tag">Vite</span>
+                            <span class="tech-tag">Tailwind CSS</span>
+                            <span class="tech-tag">Express.js</span>
+                            <span class="tech-tag">Turso</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Skills Section -->
-        <section id="skills" class="section">
+        <section id="skills" class="section" data-section="skills" data-visible="true">
             <div class="voxel-island">
                 <h2>Skills</h2>
                 <div class="skills-container">
@@ -285,49 +301,56 @@
                 </div>
             </div>
         </section>
-
         <!-- Education Section -->
-        <section id="education" class="section">
+        <section id="education" class="section" data-section="education" data-visible="true">
             <div class="voxel-island">
                 <h2>Education</h2>
+                <div class="education-item" style="margin-bottom: 2rem;">
+                    <h3>Master of Computer Science</h3>
+                    <div class="institution">University of Dayton</div>
+                    <div class="location">Dayton, OH</div>
+                    <div class="duration">Expected May 2026</div>
+                    <p>GPA: 3.7</p>
+                </div>
                 <div class="education-item">
                     <h3>Bachelor of Computer Science</h3>
-                    <div class="institution">University of Technology</div>
-                    <div class="duration">2018 - 2022</div>
-                    <p>
-                        Graduated with honors, specializing in software engineering and web development.
-                        Completed capstone project on scalable web applications.
-                    </p>
+                    <div class="institution">University of Dayton</div>
+                    <div class="location">Dayton, OH</div>
+                    <div class="duration">April 2019 - June 2023</div>
+                    <p>GPA: 8/10</p>
                 </div>
             </div>
         </section>
 
-        <!-- Achievements Section -->
-        <section id="achievements" class="section">
+        <!-- Achievements Section - Hidden by default, can be toggled via controls -->
+        <section id="achievements" class="section" data-section="achievements" data-visible="false">
             <div class="voxel-island">
                 <h2>Achievements</h2>
                 <div class="achievements-grid">
                     <div class="achievement-card">
                         <div class="achievement-icon">🏆</div>
-                        <h3>Best Developer Award</h3>
-                        <p>Recognized for outstanding contributions to web development projects in 2023.</p>
+                        <h3>Research Excellence</h3>
+                        <p>98% accuracy in AI model for bird species classification in real-time computer vision
+                            research.</p>
                     </div>
                     <div class="achievement-card">
-                        <div class="achievement-icon">📚</div>
-                        <h3>Certified Developer</h3>
-                        <p>Obtained multiple certifications in React, Node.js, and cloud technologies.</p>
+                        <div class="achievement-icon">📈</div>
+                        <h3>Performance Optimization</h3>
+                        <p>Improved system performance by 30% and reduced incident response time by 60% through
+                            automated CI/CD pipelines.</p>
                     </div>
                     <div class="achievement-card">
-                        <div class="achievement-icon">🚀</div>
-                        <h3>Open Source Contributor</h3>
-                        <p>Active contributor to various open-source projects and community initiatives.</p>
+                        <div class="achievement-icon">🎯</div>
+                        <h3>Fraud Detection</h3>
+                        <p>Enhanced approval accuracy by 13% and reduced false declines by 15% in payment processing
+                            systems.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="section">
+        <section id="contact" class="section" data-section="contact" data-visible="true">
             <div class="voxel-island">
                 <h2>Get In Touch</h2>
                 <div class="contact-content">
@@ -359,8 +382,8 @@
         </section>
     </main>
 
-    <script src="src/components/main.js"></script>
-    <script src="src/utils/visitor-counter.js"></script>
+    <script type="module" src="src/components/main.js"></script>
+    <script type="module" src="src/utils/visitor-counter.js"></script>
 </body>
 
 </html>
