@@ -83,3 +83,4 @@ src/
 ## 📄 License
 
 MIT License - feel free to use this as a template for your own portfolio!
+# Force Vercel deployment
