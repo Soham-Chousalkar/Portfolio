@@ -815,7 +815,7 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Visitor Counter Styles */
+/* Visitor Counter Styles - Neumorphic Design */
 .visitor-counter {
     position: fixed;
     bottom: 100px;
@@ -824,151 +824,73 @@ html {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.counter-bubble {
+.visitor-voxel-island {
     position: relative;
-    background: rgba(34, 56, 67, 0.9);
+    background: rgba(215, 122, 97, 0.8);
     backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 1rem 1.5rem;
     border: 1px solid rgba(239, 241, 243, 0.2);
-    border-radius: 20px;
-    padding: 15px 20px;
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.2),
         inset 0 1px 0 rgba(239, 241, 243, 0.2);
-    min-width: 120px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
+    overflow: hidden;
 }
 
-.counter-bubble:hover {
-    transform: translateY(-3px);
+.visitor-voxel-island::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(239, 241, 243, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.visitor-voxel-island:hover::before {
+    left: 100%;
+}
+
+.visitor-voxel-island:hover {
+    transform: translateY(-5px);
     box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.3),
+        0 15px 40px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(239, 241, 243, 0.3);
 }
 
-.counter-content {
+.visitor-content {
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: center;
 }
 
-.counter-icon {
-    font-size: 24px;
-    color: #d8b4a0;
-}
-
-.counter-text {
+.visitor-text {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 }
 
-.counter-number {
-    font-size: 24px;
+.visitor-label {
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.visitor-number {
+    font-size: 1.5rem;
     font-weight: 800;
-    color: #d8b4a0;
+    color: var(--text-primary);
     font-family: 'Courier New', monospace;
     letter-spacing: 1px;
 }
 
-.counter-label {
-    font-size: 10px;
-    color: #eff1f3;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.9;
-}
-
-/* Expanded Counter */
-.counter-expanded {
-    position: absolute;
-    bottom: 100%;
-    right: 0;
-    background: rgba(34, 56, 67, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(239, 241, 243, 0.2);
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 15px;
-    min-width: 300px;
-    max-width: 400px;
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(0.8) translateY(20px);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(239, 241, 243, 0.2);
-}
-
-/* Ultra-Optimal CSS-Only Toggle - No JavaScript needed! */
-.counter-bubble:focus-within+.counter-expanded,
-.visitor-counter:focus-within .counter-expanded {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1) translateY(0);
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.stat-item {
-    text-align: center;
-    padding: 10px;
-    background: rgba(34, 56, 67, 0.8);
-    backdrop-filter: blur(10px);
-    border-radius: 8px;
-    border: 1px solid rgba(239, 241, 243, 0.2);
-    box-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(239, 241, 243, 0.2);
-}
-
-.stat-item .stat-number {
-    font-size: 18px;
-    font-weight: 700;
-    color: #d8b4a0;
-    font-family: 'Courier New', monospace;
-}
-
-.stat-item .stat-label {
-    font-size: 9px;
-    color: #eff1f3;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    opacity: 0.9;
-    margin-top: 5px;
-}
-
-.location-map {
-    border-top: 1px solid rgba(239, 241, 243, 0.3);
-    padding-top: 15px;
-}
-
-.location-map h3 {
-    font-size: 14px;
-    color: #d8b4a0;
-    text-align: center;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-#location-chart {
-    width: 100%;
-    height: 150px;
-    background: rgba(34, 56, 67, 0.8);
-    backdrop-filter: blur(10px);
-    border-radius: 8px;
-    border: 1px solid rgba(239, 241, 243, 0.2);
-    box-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(239, 241, 243, 0.2);
-}
 
 /* Responsive adjustments for visitor counter */
 @media (max-width: 768px) {
@@ -977,18 +899,16 @@ html {
         right: 20px;
     }
 
-    .counter-bubble {
-        min-width: 100px;
-        padding: 12px 15px;
+    .visitor-voxel-island {
+        padding: 0.8rem 1.2rem;
     }
 
-    .counter-number {
-        font-size: 20px;
+    .visitor-number {
+        font-size: 1.3rem;
     }
 
-    .counter-expanded {
-        min-width: 280px;
-        max-width: 320px;
+    .visitor-label {
+        font-size: 0.7rem;
     }
 }
 
@@ -1284,13 +1204,13 @@ html {
     box-shadow: 0 8px 24px var(--shadow-dark);
 }
 
-.theme-toggle[data-theme="light"]::before {
+/* .theme-toggle[data-theme="light"]::before {
     content: "🌙";
 }
 
 .theme-toggle[data-theme="dark"]::before {
     content: "☀️";
-}
+} */
 
 /* === OPTIMIZED GLASS SYSTEM === */
 :root {
@@ -1303,81 +1223,4 @@ html {
     background: rgba(255, 255, 255, var(--glass-opacity));
     backdrop-filter: blur(var(--glass-blur));
     border-radius: var(--glass-radius);
-}
-
-/* Ultra-Optimal CSS-Only Location Chart */
-.location-chart {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    height: 100%;
-}
-
-.location-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    height: 20px;
-    position: relative;
-}
-
-.location-bar::before {
-    content: attr(data-country);
-    font-size: 10px;
-    color: var(--text-secondary);
-    min-width: 60px;
-    text-align: right;
-    font-weight: 500;
-}
-
-.location-bar::after {
-    content: attr(data-count);
-    font-size: 10px;
-    color: var(--accent-primary);
-    font-weight: 600;
-    min-width: 30px;
-    text-align: left;
-    font-family: 'Courier New', monospace;
-}
-
-.location-bar {
-    background: linear-gradient(90deg,
-            var(--accent-primary) 0%,
-            var(--accent-primary) calc(var(--percentage) * 1%),
-            rgba(239, 241, 243, 0.1) calc(var(--percentage) * 1%));
-    height: 8px;
-    border-radius: 4px;
-    margin-left: 70px;
-    margin-right: 40px;
-    position: relative;
-    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.location-bar:hover {
-    background: linear-gradient(90deg,
-            var(--accent-secondary) 0%,
-            var(--accent-secondary) calc(var(--percentage) * 1%),
-            rgba(239, 241, 243, 0.2) calc(var(--percentage) * 1%));
-    transform: scaleY(1.2);
-}
-
-/* CSS Custom Properties for Dynamic Bar Widths */
-.location-bar[data-percentage="100"] {
-    --percentage: 100;
-}
-
-.location-bar[data-percentage="60"] {
-    --percentage: 60;
-}
-
-.location-bar[data-percentage="40"] {
-    --percentage: 40;
-}
-
-.location-bar[data-percentage="32"] {
-    --percentage: 32;
-}
-
-.location-bar[data-percentage="20"] {
-    --percentage: 20;
 }

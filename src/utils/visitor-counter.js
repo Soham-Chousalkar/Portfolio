@@ -18,42 +18,11 @@ class SimpleVisitorCounter {
         const container = document.createElement('div');
         container.className = 'visitor-counter';
         container.innerHTML = `
-            <div class="counter-bubble" tabindex="0">
-                <div class="counter-content">
-                    <div class="counter-icon">👥</div>
-                    <div class="counter-text">
-                        <div class="counter-number" id="visitor-count">0</div>
-                        <div class="counter-label">Visitors</div>
-                    </div>
-                </div>
-            </div>
-            <div class="counter-expanded">
-                <div class="stats-grid">
-                    <div class="stat-item" data-value="25">
-                        <div class="stat-number">25</div>
-                        <div class="stat-label">Total Visitors</div>
-                    </div>
-                    <div class="stat-item" data-value="100">
-                        <div class="stat-number">100</div>
-                        <div class="stat-label">Total Visits</div>
-                    </div>
-                    <div class="stat-item" data-value="3">
-                        <div class="stat-number">3</div>
-                        <div class="stat-label">Countries</div>
-                    </div>
-                    <div class="stat-item" data-value="5">
-                        <div class="stat-number">5</div>
-                        <div class="stat-label">Cities</div>
-                    </div>
-                </div>
-                <div class="location-map">
-                    <h3>Top Locations</h3>
-                    <div class="location-chart">
-                        <div class="location-bar" data-country="United States" data-count="25" data-percentage="100"></div>
-                        <div class="location-bar" data-country="United Kingdom" data-count="15" data-percentage="60"></div>
-                        <div class="location-bar" data-country="Canada" data-count="10" data-percentage="40"></div>
-                        <div class="location-bar" data-country="Germany" data-count="8" data-percentage="32"></div>
-                        <div class="location-bar" data-country="Australia" data-count="5" data-percentage="20"></div>
+            <div class="visitor-voxel-island" tabindex="0">
+                <div class="visitor-content">
+                    <div class="visitor-text">
+                        <span class="visitor-label">Visitors</span>
+                        <span class="visitor-number" id="visitor-count">0</span>
                     </div>
                 </div>
             </div>
