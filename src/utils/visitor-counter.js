@@ -18,7 +18,7 @@ class SimpleVisitorCounter {
         const container = document.createElement('div');
         container.className = 'visitor-counter';
         container.innerHTML = `
-            <div class="visitor-voxel-island" tabindex="0">
+            <div class="visitor-panel" tabindex="0">
                 <div class="visitor-content">
                     <div class="visitor-text">
                         <span class="visitor-label">Visitors</span>
