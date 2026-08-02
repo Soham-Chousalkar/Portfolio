@@ -1,50 +1,43 @@
-// Minimalist Portfolio JavaScript
+// System Tray Clock — XP Portfolio
+// Shows HH:MM in taskbar; hover reveals world clock popup
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Simplified World Clock using Intl.DateTimeFormat API
-    function updateWorldClock() {
-        const cities = [
-            { id: 'hyderabad-time', timeZone: 'Asia/Kolkata' },
-            { id: 'london-time', timeZone: 'Europe/London' },
-            { id: 'arizona-time', timeZone: 'America/Phoenix' },
-            { id: 'texas-time', timeZone: 'America/Chicago' },
-            { id: 'dayton-time', timeZone: 'America/New_York' }
-        ];
-        
-        cities.forEach(city => {
-            const time = new Date().toLocaleTimeString('en-US', {
-                hour12: false,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                timeZone: city.timeZone
-            });
-            document.getElementById(city.id).textContent = time;
+document.addEventListener('DOMContentLoaded', () => {
+    const trayTime = document.getElementById('tray-time');
+    const popup    = document.getElementById('tray-clock-popup');
+
+    const CITIES = [
+        { label: 'Hyderabad 🇮🇳', zone: 'Asia/Kolkata'      },
+        { label: 'London 🇬🇧',    zone: 'Europe/London'      },
+        { label: 'Arizona 🇺🇸',   zone: 'America/Phoenix'    },
+        { label: 'Chicago 🇺🇸',   zone: 'America/Chicago'    },
+        { label: 'Dayton 🇺🇸',    zone: 'America/New_York'   },
+    ];
+
+    function fmt(zone) {
+        return new Date().toLocaleTimeString('en-US', {
+            hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit',
+            timeZone: zone,
         });
     }
-    
-    // Update clock immediately and then every second
-    updateWorldClock();
-    setInterval(updateWorldClock, 1000);
 
-    // Simplified theme toggle
-    const themeToggle = document.querySelector('.theme-toggle');
-    const htmlElement = document.documentElement;
-    
-    // Check for saved theme preference or default to light
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    htmlElement.setAttribute('data-theme', savedTheme);
-    themeToggle.setAttribute('data-theme', savedTheme);
-    
-    themeToggle.addEventListener('click', () => {
-        const currentTheme = htmlElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        htmlElement.setAttribute('data-theme', newTheme);
-        themeToggle.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-    });
+    function tick() {
+        // Taskbar clock
+        if (trayTime) {
+            const now = new Date();
+            const h   = String(now.getHours()).padStart(2, '0');
+            const m   = String(now.getMinutes()).padStart(2, '0');
+            trayTime.textContent = `${h}:${m}`;
+        }
+        // World clock popup
+        if (popup) {
+            popup.innerHTML = CITIES.map(c => `
+<div class="clock-row">
+  <span class="clock-city">${c.label}</span>
+  <span class="clock-time-val">${fmt(c.zone)}</span>
+</div>`).join('');
+        }
+    }
 
-}); 
-
-// Force Vercel rebuild Sun, Sep  7, 2025  7:58:27 PM
+    tick();
+    setInterval(tick, 1000);
+});

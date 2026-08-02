@@ -1,453 +1,76 @@
 <!DOCTYPE html>
-<!-- Last updated: August 2026 - Data refresh, ProceduralBackground, AttentionHUD, Visitor dedup -->
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soham Chousalkar — Software Engineer & CS Graduate Researcher</title>
-    <meta name="description"
-        content="Soham Chousalkar is a Software Engineer and Computer Science MS student at the University of Dayton, specializing in backend systems, computer vision, and ML infrastructure.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soham Chousalkar — Portfolio</title>
+  <meta name="description" content="Soham Chousalkar — Software Engineer and CS Graduate Researcher specializing in backend systems, ML pipelines, and computer vision. Interactive Windows XP–themed portfolio.">
+  <meta name="author" content="Soham Chousalkar">
+  <meta property="og:title" content="Soham Chousalkar — Portfolio">
+  <meta property="og:description" content="Software Engineer · 2+ Years Experience · MS Computer Science @ University of Dayton">
+  <meta property="og:type" content="website">
 
-    <!-- Google Fonts preconnect for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-
-  <script type="module" crossorigin src="./assets/main-DTgSoBNz.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/main-DjW7aA9O.css">
+  <!-- Stylesheets -->
+  <script type="module" crossorigin src="./assets/main-f-q8u13Z.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/main-CagyQ9o2.css">
 </head>
+<body class="xp-desktop">
 
-<body>
-    <!-- Theme Toggle -->
-    <button class="theme-toggle" data-theme="dark" title="Toggle theme">&#9728;</button>
+  <!-- ░░ BLISS WALLPAPER CANVAS ░░ -->
+  <canvas id="bliss-canvas" aria-hidden="true"></canvas>
 
-    <!-- World Clock -->
-    <div class="world-clock">
-        <div class="clock-container">
-            <div class="clock-item">
-                <div class="clock-icon">🇮🇳</div>
-                <div class="clock-info">
-                    <div class="city-name">Hyderabad</div>
-                    <div class="time" id="hyderabad-time">--:--</div>
-                </div>
-            </div>
-            <div class="clock-item">
-                <div class="clock-icon">🇬🇧</div>
-                <div class="clock-info">
-                    <div class="city-name">London</div>
-                    <div class="time" id="london-time">--:--</div>
-                </div>
-            </div>
-            <div class="clock-item">
-                <div class="clock-icon">🇺🇸</div>
-                <div class="clock-info">
-                    <div class="city-name">Arizona</div>
-                    <div class="time" id="arizona-time">--:--</div>
-                </div>
-            </div>
-            <div class="clock-item">
-                <div class="clock-icon">🇺🇸</div>
-                <div class="clock-info">
-                    <div class="city-name">Texas</div>
-                    <div class="time" id="texas-time">--:--</div>
-                </div>
-            </div>
-            <div class="clock-item">
-                <div class="clock-icon">🇺🇸</div>
-                <div class="clock-info">
-                    <div class="city-name">Dayton</div>
-                    <div class="time" id="dayton-time">--:--</div>
-                </div>
-            </div>
-        </div>
+  <!-- ░░ DESKTOP ICONS — left column ░░ -->
+  <div id="desktop-icons" class="desktop-icons" aria-label="Desktop icons" role="list"></div>
+
+  <!-- ░░ WINDOWS LAYER ░░ -->
+  <div id="xp-windows-container" class="xp-windows-container" aria-live="polite"></div>
+
+  <!-- ░░ TASKBAR ░░ -->
+  <div id="xp-taskbar" class="xp-taskbar" role="toolbar" aria-label="Taskbar">
+
+    <!-- Start button -->
+    <button id="xp-start-btn" class="xp-start-btn"
+            aria-haspopup="true" aria-expanded="false" aria-controls="xp-start-menu">
+      <span class="start-logo" aria-hidden="true">⊞</span>
+      <span class="start-text">start</span>
+    </button>
+
+    <div class="taskbar-divider" aria-hidden="true"></div>
+
+    <!-- Open window buttons -->
+    <div id="xp-taskbar-windows" class="xp-taskbar-windows" aria-label="Open windows"></div>
+
+    <!-- System Tray -->
+    <div id="xp-system-tray" class="xp-system-tray" aria-label="System tray">
+
+      <!-- Visitor counter icon -->
+      <div id="tray-visitor" class="tray-icon" title="Unique visitors">
+        <span aria-hidden="true">👥</span>
+        <span id="tray-visitor-count" class="tray-visitor-count" aria-live="polite">—</span>
+      </div>
+
+      <!-- World clock -->
+      <div id="tray-clock" class="tray-clock" aria-label="System clock">
+        <span id="tray-time">--:--</span>
+        <div id="tray-clock-popup" class="tray-clock-popup" role="tooltip"></div>
+      </div>
+
     </div>
+  </div>
 
-    <!-- Bottom Navigation Bar -->
-    <nav class="bottom-nav">
-        <div class="nav-container">
-            <a href="#home" class="nav-item">
-                <div class="nav-label">Home</div>
-            </a>
-            <a href="#about" class="nav-item">
-                <div class="nav-label">About</div>
-            </a>
-            <a href="#experience" class="nav-item">
-                <div class="nav-label">Experience</div>
-            </a>
-            <a href="#projects" class="nav-item">
-                <div class="nav-label">Projects</div>
-            </a>
-            <a href="#skills" class="nav-item">
-                <div class="nav-label">Skills</div>
-            </a>
-            <a href="#education" class="nav-item">
-                <div class="nav-label">Education</div>
-            </a>
-            <a href="#contact" class="nav-item">
-                <div class="nav-label">Contact</div>
-            </a>
-        </div>
-    </nav>
+  <!-- ░░ START MENU (hidden by default) ░░ -->
+  <div id="xp-start-menu" class="xp-start-menu" hidden role="menu" aria-label="Start menu"></div>
 
-    <!-- Main Content -->
-    <main class="main-content">
+  <!-- ░░ BSOD OVERLAY (Shut Down easter egg) ░░ -->
+  <div id="xp-bsod" class="xp-bsod" hidden aria-live="assertive" aria-atomic="true"></div>
 
-        <!-- Hero Section -->
-        <section id="home" class="section" data-section="home" data-visible="true">
-            <div class="portfolio-panel">
-                <div class="hero-section">
-                    <div class="hero-content">
-                        <h1>Soham Chousalkar</h1>
-                        <p class="subtitle">Software Engineer &nbsp;·&nbsp; CS Graduate Researcher &nbsp;·&nbsp;
-                            Computer Vision Lab</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <!-- ░░ DESKTOP CONTEXT MENU ░░ -->
+  <div id="xp-context-menu" class="xp-context-menu" hidden role="menu"></div>
 
-        <!-- About Section -->
-        <section id="about" class="section" data-section="about" data-visible="true">
-            <div class="portfolio-panel">
-                <h2>About Me</h2>
-                <div class="content-grid">
-                    <div class="text-content">
-                        <p>
-                            Master's student in Computer Science at the University of Dayton with 2+ years of
-                            professional software engineering experience across fintech and enterprise retail.
-                            Deep expertise in backend systems, distributed APIs, and computer vision research.
-                        </p>
-                        <p>
-                            Currently building an end-to-end DNN inference pipeline for pianist gesture recognition
-                            (PyTorch/CUDA), achieving 91.68% accuracy at 10–30ms per-frame latency on RTX 4060/4090.
-                        </p>
-                    </div>
-                    <div class="stats-grid">
-                        <div class="stat">
-                            <span class="stat-number">2+</span>
-                            <span class="stat-label">Years Experience</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">15+</span>
-                            <span class="stat-label">Projects Completed</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">91.7%</span>
-                            <span class="stat-label">Thesis Accuracy</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Experience Section -->
-        <section id="experience" class="section" data-section="experience" data-visible="true">
-            <div class="portfolio-panel">
-                <h2>Experience</h2>
-                <div class="timeline">
-                    <!-- Global Payments -->
-                    <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="timeline-content">
-                            <h3>Associate Software Engineer</h3>
-                            <div class="company">Global Payments Asia Pacific</div>
-                            <div class="duration">Jan 2024 – Jun 2024</div>
-                            <ul class="highlights-list">
-                                <li>Designed high-throughput REST APIs and microservices streaming real-time analytics to
-                                    2.5M+ active users.</li>
-                                <li>Built scalable payment-tracking pipelines automating 150K+ daily billing
-                                    transactions.</li>
-                                <li>Optimized PostgreSQL indexing and Redis caching, cutting query latency by 38% and
-                                    boosting throughput to 4,500 RPS.</li>
-                                <li>Implemented OAuth 2.0/JWT auth with GDPR-aligned access controls securing 10M+
-                                    financial records.</li>
-                                <li>Created CI/CD pipelines reducing deployment cycle times by 40% and rollbacks to
-                                    under 1%.</li>
-                                <li>Built ML-based anomaly detection catching fraudulent transactions at 94.5%
-                                    precision.</li>
-                                <li>Led cross-team code reviews across 4 engineering groups, raising test coverage to
-                                    85%.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- NCR -->
-                    <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="timeline-content">
-                            <h3>Software Engineer I</h3>
-                            <div class="company">NCR Corp. / NCR VOYIX</div>
-                            <div class="duration">Feb 2022 – Dec 2023</div>
-                            <ul class="highlights-list">
-                                <li>Built scalable backend APIs powering enterprise POS workflows across 1,200+ retail
-                                    locations.</li>
-                                <li>Redesigned core database schemas, reducing p99 API latency from 220ms to 85ms under
-                                    heavy concurrency.</li>
-                                <li>Developed React/WebSocket dashboards with Redis caching delivering sub-50ms
-                                    real-time UI updates.</li>
-                                <li>Implemented Jest and PyTest suites, increasing codebase coverage from 55% to 88%.
-                                </li>
-                                <li>Built distributed ETL pipelines processing 2TB+ of raw daily transaction data.</li>
-                                <li>Deployed Dockerized ECS services via Jenkins, reducing staging-to-production
-                                    variance by 60%.</li>
-                                <li>Coordinated with UI/UX teams to map complex backend transaction flows with zero
-                                    client-side schema misalignments.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Research -->
-                    <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="timeline-content">
-                            <h3>Computer Vision Lab Research Intern</h3>
-                            <div class="company">University of Dayton</div>
-                            <div class="duration">Jan 2025 – Present</div>
-                            <ul class="highlights-list">
-                                <li>Training AI models identifying and classifying parent and chick of 14 bird species
-                                    in real-time with 98% accuracy.</li>
-                                <li>Thesis: Pianist Gesture Recognition — benchmarking 10+ models across visual,
-                                    skeletal, and spatial-structural paradigms; 91.68% accuracy, 10–30ms latency.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="section" data-section="projects" data-visible="true"
-            style="content-visibility: auto; contain-intrinsic-size: 0 600px;">
-            <div class="portfolio-panel">
-                <h2>Projects</h2>
-                <div class="projects-grid">
-
-                    <!-- PayCheck -->
-                    <div class="project-card"
-                        onclick="window.open('https://pay-check-lilac.vercel.app/', '_blank', 'noopener')">
-                        <h3>PayCheck <span class="project-live-badge">Live ↗</span></h3>
-                        <p>Full-stack payroll system delivering 100% calculation accuracy across 10K+ monthly dynamic
-                            pay structures with Zoom, Gmail, and Stripe API integrations.</p>
-                        <ul class="highlights-list compact">
-                            <li>Automated 500+ monthly payroll events and transactional logging workflows.</li>
-                            <li>GDPR-aligned RBAC authentication protecting 5K+ sensitive payroll records.</li>
-                            <li>Reduced analytical query execution time by 45% through indexed schema design.</li>
-                            <li>99.9% uptime via real-time monitoring pipelines and predictive alerting.</li>
-                        </ul>
-                        <div class="tech-stack">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">SQL</span>
-                            <span class="tech-tag">Stripe API</span>
-                            <span class="tech-tag">Zoom API</span>
-                            <span class="tech-tag">React</span>
-                        </div>
-                    </div>
-
-                    <!-- Air Brush -->
-                    <div class="project-card"
-                        onclick="window.location.href='https://github.com/Soham-Chousalkar/Gesture-Brush'">
-                        <h3>Air Brush</h3>
-                        <p>Computer vision gesture-recognition system achieving 96.2% classification accuracy with
-                            sub-50ms inference latency via multithreaded pipeline processing.</p>
-                        <ul class="highlights-list compact">
-                            <li>Multithreaded pipeline across 4 worker threads improving frame throughput by 2.8×.</li>
-                            <li>Spatial indexing optimizations improving workflow response times by 30%.</li>
-                            <li>Auto-calibration tools boosting precision by 18% across diverse lighting conditions.
-                            </li>
-                        </ul>
-                        <div class="tech-stack">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">OpenCV</span>
-                            <span class="tech-tag">Deep Learning</span>
-                            <span class="tech-tag">Computer Vision</span>
-                        </div>
-                    </div>
-
-                    <!-- Virtual Campus -->
-                    <div class="project-card"
-                        onclick="window.location.href='https://github.com/Soham-Chousalkar/virtual-campus'">
-                        <h3>Virtual Campus</h3>
-                        <p>Real-time distributed 3D campus simulation supporting synchronized state across 300+
-                            concurrent active clients with 60fps high-fidelity rendering.</p>
-                        <ul class="highlights-list compact">
-                            <li>Distributed multithreading architecture increasing network throughput by 3.5×.</li>
-                            <li>Event routing algorithms reducing client desynchronization by 65% at peak load.</li>
-                            <li>Streaming texture and dynamic lighting pipelines maintaining 60fps performance.</li>
-                        </ul>
-                        <div class="tech-stack">
-                            <span class="tech-tag">Unity Engine</span>
-                            <span class="tech-tag">C#</span>
-                            <span class="tech-tag">Blender</span>
-                            <span class="tech-tag">Networking</span>
-                        </div>
-                    </div>
-
-                    <!-- JavaFX Suite -->
-                    <div class="project-card"
-                        onclick="window.location.href='https://github.com/Soham-Chousalkar'">
-                        <h3>JavaFX Suite</h3>
-                        <p>Multi-application JavaFX suite including a spatial puzzle engine, ASCII-art generator, and
-                            runtime inspection tooling built for sub-15ms rendering cycles.</p>
-                        <ul class="highlights-list compact">
-                            <li>Drag-and-drop puzzle logic supporting seamless 60fps state transitions across 50+
-                                layouts.</li>
-                            <li>ASCII-art generator converting 1,000+ character maps in under 100ms.</li>
-                            <li>Interactive runtime tracing reducing debugging iteration time by 35%.</li>
-                        </ul>
-                        <div class="tech-stack">
-                            <span class="tech-tag">Java</span>
-                            <span class="tech-tag">JavaFX</span>
-                            <span class="tech-tag">Data Structures</span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="section" data-section="skills" data-visible="true"
-            style="content-visibility: auto; contain-intrinsic-size: 0 500px;">
-            <div class="portfolio-panel">
-                <h2>Skills</h2>
-                <div class="skills-container">
-
-                    <div class="skill-category">
-                        <h3>Languages</h3>
-                        <div class="skill-items">
-                            <span class="skill-item">Python</span>
-                            <span class="skill-item">Java</span>
-                            <span class="skill-item">JavaScript</span>
-                            <span class="skill-item">TypeScript</span>
-                            <span class="skill-item">SQL</span>
-                            <span class="skill-item">C#</span>
-                            <span class="skill-item">Ruby</span>
-                            <span class="skill-item">Go</span>
-                            <span class="skill-item">Scala</span>
-                        </div>
-                    </div>
-
-                    <div class="skill-category">
-                        <h3>Frameworks</h3>
-                        <div class="skill-items">
-                            <span class="skill-item">Node.js</span>
-                            <span class="skill-item">React</span>
-                            <span class="skill-item">Express</span>
-                            <span class="skill-item">Spring</span>
-                            <span class="skill-item">Flask</span>
-                            <span class="skill-item">FastAPI</span>
-                        </div>
-                    </div>
-
-                    <div class="skill-category">
-                        <h3>Cloud &amp; DevOps</h3>
-                        <div class="skill-items">
-                            <span class="skill-item">AWS</span>
-                            <span class="skill-item">Docker</span>
-                            <span class="skill-item">Kubernetes</span>
-                            <span class="skill-item">CI/CD</span>
-                            <span class="skill-item">Linux</span>
-                            <span class="skill-item">Shell Scripting</span>
-                        </div>
-                    </div>
-
-                    <div class="skill-category">
-                        <h3>Databases</h3>
-                        <div class="skill-items">
-                            <span class="skill-item">PostgreSQL</span>
-                            <span class="skill-item">MySQL</span>
-                            <span class="skill-item">Oracle</span>
-                            <span class="skill-item">Redis</span>
-                            <span class="skill-item">SQLite</span>
-                        </div>
-                    </div>
-
-                    <div class="skill-category">
-                        <h3>Engineering Practices</h3>
-                        <div class="skill-items">
-                            <span class="skill-item">System Design</span>
-                            <span class="skill-item">API Development</span>
-                            <span class="skill-item">Code Reviews</span>
-                            <span class="skill-item">Unit/Integration Testing</span>
-                            <span class="skill-item">ETL Pipelines</span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- Education Section -->
-        <section id="education" class="section" data-section="education" data-visible="true"
-            style="content-visibility: auto; contain-intrinsic-size: 0 400px;">
-            <div class="portfolio-panel">
-                <h2>Education</h2>
-                <div class="projects-grid">
-
-                    <div class="education-item">
-                        <h3>Master of Science, Computer Science</h3>
-                        <div class="institution">University of Dayton</div>
-                        <div class="location">Dayton, OH</div>
-                        <div class="duration">Expected May 2026</div>
-                        <p>GPA: 3.7</p>
-                        <p class="education-thesis">
-                            <strong>Thesis:</strong> Pianist Gesture Recognition — End-to-end DNN inference pipeline
-                            (PyTorch/CUDA); benchmarked 10+ models across visual, skeletal, and spatial-structural
-                            paradigms; 91.68% accuracy, 10–30ms per-frame latency on RTX 4060/4090.
-                        </p>
-                    </div>
-
-                    <div class="education-item">
-                        <h3>Bachelor of Engineering, Computer Science</h3>
-                        <div class="institution">Neil Gogte Institute of Technology</div>
-                        <div class="location">Hyderabad, India</div>
-                        <div class="duration">Apr 2019 – Jun 2023</div>
-                        <p>GPA: 8/10</p>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="section" data-section="contact" data-visible="true">
-            <div class="portfolio-panel">
-                <h2>Get In Touch</h2>
-                <div class="contact-content">
-                    <p>
-                        I'm always open to discussing new opportunities, interesting projects,
-                        or just having a chat about technology and design.
-                    </p>
-                    <div class="contact-methods">
-                        <a href="mailto:sohamchousalkar123@gmail.com" class="contact-method">
-                            <div class="contact-icon">📧</div>
-                            <span>sohamchousalkar123@gmail.com</span>
-                        </a>
-                        <a href="https://www.linkedin.com/in/sohamchousalkar/" class="contact-method"
-                            target="_blank" rel="noopener">
-                            <div class="contact-icon">💼</div>
-                            <span>LinkedIn</span>
-                        </a>
-                        <a href="https://github.com/Soham-Chousalkar" class="contact-method"
-                            target="_blank" rel="noopener">
-                            <div class="contact-icon">🐙</div>
-                            <span>GitHub</span>
-                        </a>
-                        <a href="https://portfolio-ruby-five-81.vercel.app" class="contact-method"
-                            target="_blank" rel="noopener">
-                            <div class="contact-icon">🌐</div>
-                            <span>Portfolio</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Core scripts -->
+  <!-- ░░ SCRIPTS ░░
+       Load order: background → desktop engine → clock → visitor counter
+       All are ES modules; Vite bundles + tree-shakes at build time.
+  -->
 
 </body>
-
 </html>

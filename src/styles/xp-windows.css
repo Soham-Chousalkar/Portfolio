@@ -1,0 +1,561 @@
+/* ============================================================
+   XP WINDOW CHROME — Individual window styling
+   ============================================================ */
+
+.xp-window {
+  position: absolute;
+  min-width: 220px;
+  min-height: 120px;
+  background: #FFFFFF;
+  border: 3px solid #0A246A;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  overflow: hidden;
+}
+
+.xp-window.focused {
+  box-shadow: 3px 3px 16px rgba(0,0,0,0.55);
+  border-color: #0A246A;
+}
+
+.xp-window.minimized { display: none !important; }
+
+.xp-window.maximized {
+  left: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: calc(100vh - var(--xp-taskbar-height)) !important;
+  border-radius: 0 !important;
+}
+
+/* ============================================================
+   TITLEBAR
+   ============================================================ */
+.xp-titlebar {
+  background: var(--xp-titlebar-inactive);
+  height: var(--xp-titlebar-height);
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  gap: 5px;
+  cursor: move;
+  flex-shrink: 0;
+  user-select: none;
+  border-radius: 5px 5px 0 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.xp-window.focused .xp-titlebar {
+  background: var(--xp-titlebar-gradient);
+}
+
+/* Top sheen */
+.xp-titlebar::after {
+  content: '';
+  position: absolute;
+  top: 1px; left: 3px; right: 62px;
+  height: 40%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.28), transparent);
+  border-radius: 3px 3px 0 0;
+  pointer-events: none;
+}
+
+.xp-titlebar-icon {
+  font-size: 15px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
+  z-index: 1;
+}
+
+.xp-titlebar-title {
+  flex: 1;
+  color: rgba(255,255,255,0.7);
+  font-family: var(--xp-font);
+  font-size: 12px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.xp-window.focused .xp-titlebar-title {
+  color: #FFFFFF;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* ============================================================
+   WINDOW CONTROL BUTTONS
+   ============================================================ */
+.xp-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.xp-ctrl-btn {
+  width: 21px;
+  height: 21px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: inset 0 1px rgba(255,255,255,0.5), 0 1px rgba(0,0,0,0.15);
+  transition: filter 0.05s;
+}
+
+.xp-ctrl-btn:hover { filter: brightness(1.15); }
+.xp-ctrl-btn:active {
+  filter: brightness(0.88);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.xp-btn-minimize {
+  background: linear-gradient(to bottom, #C0D4F0 0%, #80A8D8 100%);
+  color: #00006A;
+}
+
+.xp-btn-maximize {
+  background: linear-gradient(to bottom, #C0D4F0 0%, #80A8D8 100%);
+  color: #00006A;
+  font-size: 9px;
+}
+
+.xp-btn-close {
+  background: linear-gradient(to bottom, #EC6060 0%, #C01818 100%);
+  color: #FFFFFF;
+  font-size: 10px;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+}
+
+/* ============================================================
+   MENU BAR
+   ============================================================ */
+.xp-menubar {
+  background: #ECE9D8;
+  border-bottom: 1px solid #ACA899;
+  display: flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+.xp-menubar-item {
+  padding: 2px 7px;
+  font-size: 11px;
+  font-family: var(--xp-font);
+  cursor: default;
+  border-radius: 2px;
+  color: #000;
+}
+
+.xp-menubar-item:hover {
+  background: var(--xp-selection);
+  color: #FFFFFF;
+}
+
+/* ADDRESS BAR */
+.xp-addressbar {
+  background: #ECE9D8;
+  border-bottom: 1px solid #ACA899;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding: 2px 8px;
+  gap: 6px;
+  flex-shrink: 0;
+  font-size: 11px;
+}
+
+.xp-addressbar-label { font-weight: 700; color: #000; }
+
+.xp-addressbar-path {
+  flex: 1;
+  background: #FFFFFF;
+  border: 1px solid #7F9DB9;
+  padding: 1px 5px;
+  font-size: 11px;
+  font-family: var(--xp-font);
+  cursor: default;
+  outline: none;
+}
+
+/* ============================================================
+   CONTENT AREA — Scrollable
+   ============================================================ */
+.xp-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #FFFFFF;
+  padding: 12px 16px;
+  cursor: default;
+  scrollbar-width: thin;
+  scrollbar-color: #ACA899 #ECE9D8;
+}
+
+.xp-content::-webkit-scrollbar { width: 14px; }
+.xp-content::-webkit-scrollbar-track { background: #ECE9D8; border-left: 1px solid #ACA899; }
+.xp-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, #D4D0C8, #ACA899);
+  border: 1px solid #716F64;
+}
+
+/* STATUS BAR */
+.xp-statusbar {
+  background: #ECE9D8;
+  border-top: 1px solid #ACA899;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 10px;
+  color: #000;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.xp-statusbar-grip {
+  margin-left: auto;
+  font-size: 9px;
+  cursor: se-resize;
+  color: #716F64;
+  letter-spacing: -1px;
+}
+
+/* RESIZE HANDLE */
+.xp-resize-handle {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 18px; height: 18px;
+  cursor: se-resize;
+  z-index: 10;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 2px;
+}
+
+.xp-resize-handle::before {
+  content: '⠿';
+  font-size: 11px;
+  color: #ACA899;
+  line-height: 1;
+}
+
+/* ============================================================
+   WINDOW CONTENT COMPONENTS
+   ============================================================ */
+
+/* HERO */
+.xp-hero-content {
+  text-align: center;
+  padding: 20px 16px;
+}
+
+.xp-hero-name {
+  font-size: 26px;
+  font-weight: 700;
+  color: #003087;
+  margin-bottom: 8px;
+  font-family: var(--xp-font);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.xp-hero-subtitle {
+  font-size: 12px;
+  color: #444;
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+
+.xp-hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.xp-badge {
+  background: linear-gradient(to bottom, #F0F8FF, #D0E4F8);
+  border: 1px solid #4A7BC0;
+  padding: 3px 10px;
+  font-size: 11px;
+  border-radius: 2px;
+  color: #000080;
+  font-weight: 700;
+}
+
+/* STAT BOXES */
+.xp-stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.xp-stat-box {
+  background: linear-gradient(to bottom, #F0F8FF, #D0E4F8);
+  border: 2px solid #4A7BC0;
+  padding: 8px 4px;
+  text-align: center;
+  border-radius: 2px;
+  box-shadow: inset 0 1px rgba(255,255,255,0.8);
+}
+
+.xp-stat-number {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000080;
+  display: block;
+}
+
+.xp-stat-label {
+  font-size: 10px;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* NOTEPAD (About) */
+.xp-notepad-content {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.75;
+  color: #000;
+  white-space: pre-wrap;
+  background: #FFFFFF;
+}
+
+/* TIMELINE (Experience) */
+.xp-timeline { display: flex; flex-direction: column; gap: 10px; }
+
+.xp-timeline-item {
+  background: #F7F7F7;
+  border: 1px solid #D4D0C8;
+  border-left: 4px solid #316AC5;
+  padding: 10px 12px;
+}
+
+.xp-timeline-role { font-size: 13px; font-weight: 700; color: #000080; margin-bottom: 2px; }
+.xp-timeline-company { font-size: 11px; font-weight: 700; color: #333; margin-bottom: 2px; }
+.xp-timeline-dates { font-size: 10px; color: #777; font-style: italic; margin-bottom: 8px; }
+
+.xp-timeline-list { list-style: none; padding: 0; }
+.xp-timeline-list li {
+  font-size: 11px;
+  color: #333;
+  padding: 2px 0 2px 14px;
+  position: relative;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  line-height: 1.5;
+}
+.xp-timeline-list li:last-child { border-bottom: none; }
+.xp-timeline-list li::before {
+  content: '•';
+  position: absolute;
+  left: 3px;
+  color: #316AC5;
+  font-weight: 700;
+}
+
+/* PROJECT TILES (Explorer) */
+.xp-project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 8px;
+}
+
+.xp-project-tile {
+  background: linear-gradient(to bottom, #FFFFFF, #EEF4FF);
+  border: 1px solid #C0C8D8;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 1px;
+}
+
+.xp-project-tile:hover {
+  border-color: #316AC5;
+  background: linear-gradient(to bottom, #EEF4FF, #D8E8FF);
+}
+
+.xp-project-tile:active { background: #C8D8F0; }
+
+.xp-project-icon { font-size: 28px; margin-bottom: 6px; display: block; }
+.xp-project-name { font-size: 12px; font-weight: 700; color: #000080; margin-bottom: 4px; }
+.xp-project-desc { font-size: 10px; color: #444; line-height: 1.4; margin-bottom: 6px; }
+
+.xp-project-tags { display: flex; flex-wrap: wrap; gap: 3px; }
+
+.xp-tag {
+  background: #ECE9D8;
+  border: 1px solid #ACA899;
+  padding: 1px 5px;
+  font-size: 9px;
+  color: #333;
+}
+
+.xp-live-badge {
+  background: linear-gradient(to bottom, #50B840, #2A8A18);
+  color: #FFFFFF;
+  border: 1px solid #1A6A08;
+  padding: 1px 5px;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 2px;
+}
+
+/* REGISTRY EDITOR (Skills) */
+.xp-registry-container {
+  display: flex;
+  height: 100%;
+  min-height: 260px;
+}
+
+.xp-registry-tree {
+  width: 42%;
+  border-right: 1px solid #ACA899;
+  padding: 4px;
+  overflow-y: auto;
+  background: #FFFFFF;
+}
+
+.xp-registry-values {
+  flex: 1;
+  padding: 6px 10px;
+  overflow-y: auto;
+  background: #FFFFFF;
+}
+
+.xp-tree-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 5px;
+  font-size: 11px;
+  cursor: pointer;
+  border-radius: 1px;
+}
+
+.xp-tree-item:hover { background: var(--xp-selection); color: #FFFFFF; }
+.xp-tree-item.selected { background: var(--xp-selection); color: #FFFFFF; }
+.xp-tree-icon { font-size: 13px; }
+
+.xp-reg-header {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 0 4px;
+  border-bottom: 1px solid #D4D0C8;
+  margin-bottom: 8px;
+  color: #000;
+}
+
+.xp-skill-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+
+.xp-skill-pill {
+  background: linear-gradient(to bottom, #EEF4FF, #D0E4F8);
+  border: 1px solid #4A7BC0;
+  padding: 3px 9px;
+  font-size: 11px;
+  color: #000080;
+  font-family: var(--xp-font);
+  border-radius: 2px;
+  cursor: default;
+}
+
+/* EDUCATION */
+.xp-edu-card {
+  background: linear-gradient(to bottom, #FFFFFF, #F5F8FF);
+  border: 1px solid #C0C8D8;
+  border-left: 4px solid #0A246A;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.xp-edu-degree { font-size: 13px; font-weight: 700; color: #000080; margin-bottom: 4px; }
+.xp-edu-inst { font-size: 12px; font-weight: 700; color: #333; margin-bottom: 2px; }
+.xp-edu-meta { font-size: 10px; color: #777; margin-bottom: 6px; }
+
+.xp-edu-gpa {
+  display: inline-block;
+  background: #ECE9D8;
+  border: 1px solid #ACA899;
+  padding: 1px 7px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 6px;
+}
+
+.xp-edu-thesis {
+  background: #FFFFC0;
+  border: 1px solid #C8C840;
+  padding: 7px 9px;
+  font-size: 10px;
+  line-height: 1.6;
+  color: #333;
+  margin-top: 6px;
+}
+
+/* CONTACT (Outlook Express) */
+.xp-contact-list { display: flex; flex-direction: column; gap: 6px; }
+
+.xp-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: #F5F5F5;
+  border: 1px solid #D4D0C8;
+  cursor: pointer;
+  text-decoration: none;
+  color: #000;
+}
+
+.xp-contact-item:hover {
+  background: #EEF4FF;
+  border-color: #4A7BC0;
+}
+
+.xp-contact-icon { font-size: 20px; width: 28px; text-align: center; flex-shrink: 0; }
+.xp-contact-label { font-size: 12px; font-weight: 700; color: #000080; display: block; }
+.xp-contact-value { font-size: 10px; color: #444; display: block; }
+
+/* RECYCLE BIN */
+.xp-recycle-content { text-align: center; padding: 28px 20px; }
+
+/* ============================================================
+   MOBILE — Windows as stacked cards
+   ============================================================ */
+@media (max-width: 768px) {
+  .xp-window {
+    position: relative !important;
+    left: auto !important; top: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 4px;
+    border: 2px solid #0A246A;
+  }
+
+  .xp-resize-handle { display: none; }
+  .xp-titlebar { cursor: default; }
+  .xp-content { max-height: 380px; }
+
+  .xp-registry-container { flex-direction: column; height: auto; }
+  .xp-registry-tree { width: 100%; max-height: 110px; border-right: none; border-bottom: 1px solid #ACA899; }
+
+  .xp-stat-row { grid-template-columns: repeat(3, 1fr); }
+}
